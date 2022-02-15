@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: [:edit, :destroy, :update]
   before_action :redirect_if_authenticated, only: [:create, :new]
 
+  # action to create a new user
   def create
     @user = User.new(create_user_params)
     if @user.save

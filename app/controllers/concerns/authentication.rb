@@ -13,7 +13,13 @@ module Authentication
   end
 
   def login(user)
+    # The reset_session method resets the session to account for session fixation
     reset_session
+
+    # We set the user's ID in the session so that we can have access to the user across requests.
+    # The user's ID won't be stored in plain text.
+    # The cookie data is cryptographically signed to make it tamper-proof.
+    # And it is also encrypted so anyone with access to it can't read its contents.
     active_session = user.active_sessions.create!(user_agent: request.user_agent, ip_address: request.ip)
     session[:current_active_session_id] = active_session.id
 
@@ -24,12 +30,16 @@ module Authentication
     cookies.delete :remember_token
   end
 
+  # The logout method simply resets the session.
   def logout
     active_session = ActiveSession.find_by(id: session[:current_active_session_id])
     reset_session
     active_session.destroy! if active_session.present?
   end
 
+  # The redirect_if_authenticated method checks to see if the user is logged in.
+  # If they are, they'll be redirected to the root_path.
+  # This will be useful on pages an authenticated user should not be able to access, such as the login page.
   def redirect_if_authenticated
     redirect_to root_path, alert: "You are already logged in." if user_signed_in?
   end
@@ -40,6 +50,10 @@ module Authentication
 
   private
 
+  # The current_user method returns a User and sets it as the user on the Current class we created.
+  # We use memoization to avoid fetching the User each time we call the method.
+  # We call the before_action filter so that we have access to the current user before each request.
+  # We also add this as a helper_method so that we have access to current_user in the views.
   def current_user
     Current.user = if session[:current_active_session_id].present?
       ActiveSession.find_by(id: session[:current_active_session_id])&.user
@@ -48,6 +62,8 @@ module Authentication
     end
   end
 
+  # The user_signed_in? method simply returns true or false depending on whether the user is signed in or not.
+  # This is helpful for conditionally rendering items in views.
   def user_signed_in?
     Current.user.present?
   end

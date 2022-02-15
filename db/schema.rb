@@ -12,8 +12,8 @@
 
 ActiveRecord::Schema.define(version: 2022_02_04_201046) do
 
-  create_table "active_sessions", force: :cascade do |t|
-    t.integer "user_id", null: false
+  create_table "active_sessions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "user_agent"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2022_02_04_201046) do
     t.index ["user_id"], name: "index_active_sessions_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

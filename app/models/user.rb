@@ -5,13 +5,21 @@ class User < ApplicationRecord
 
   attr_accessor :current_password
 
+  # Adds methods to set and authenticate against a BCrypt password.
+  # This mechanism requires you to have a XXX_digest attribute.
+  # Where XXX is the attribute name of your desired password.
+  # This work with the password_digest column.
   has_secure_password
 
+  # 1 user can have many active sessions
   has_many :active_sessions, dependent: :destroy
 
+  # before_save is only called after validation has passed
   before_save :downcase_email
   before_save :downcase_unconfirmed_email
 
+  # ensure all emails are valid through a format validation.
+  # URI::MailTo::EMAIL_REGEXP validate that the email address is properly formatted.
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}, presence: true, uniqueness: true
   validates :unconfirmed_email, format: {with: URI::MailTo::EMAIL_REGEXP, allow_blank: true}
 
@@ -30,6 +38,7 @@ class User < ApplicationRecord
     end
   end
 
+  # The confirm! method will be called when a user confirms their email address.
   def confirm!
     if unconfirmed_or_reconfirming?
       if unconfirmed_email.present?
@@ -41,6 +50,7 @@ class User < ApplicationRecord
     end
   end
 
+  # check if confirmed_at column is present
   def confirmed?
     confirmed_at.present?
   end
@@ -71,10 +81,12 @@ class User < ApplicationRecord
     UserMailer.password_reset(self, password_reset_token).deliver_now
   end
 
+  # check if unconfirmed_email column is present
   def reconfirming?
     unconfirmed_email.present?
   end
 
+  # opposite of confirm method
   def unconfirmed?
     !confirmed?
   end
@@ -85,10 +97,13 @@ class User < ApplicationRecord
 
   private
 
+  # save all emails to the database in a downcase format via a before_save callback,
+  # so that the values are saved in a consistent format.
   def downcase_email
     self.email = email.downcase
   end
 
+  # downcase unconfirmed email
   def downcase_unconfirmed_email
     return if unconfirmed_email.nil?
     self.unconfirmed_email = unconfirmed_email.downcase

@@ -6,8 +6,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: rails_oauth_practice_development
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pass
     ports:
       - "3307:3306"
   app: 
