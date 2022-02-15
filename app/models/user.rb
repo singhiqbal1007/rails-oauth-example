@@ -88,6 +88,9 @@ class User < ApplicationRecord
   def send_confirmation_email!
     confirmation_token = generate_confirmation_token
     UserMailer.confirmation(self, confirmation_token).deliver_now
+
+    # we will show this confirmation token in the flash message for demo
+    confirmation_token
   end
 
   def send_password_reset_email!

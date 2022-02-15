@@ -30,4 +30,6 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  check_confirmation_email: "Check your email for confirmation instructions"
+  email_alert_heading: "For demo only"
+  email_alert_body: "We do not send actual email in this demo. You can use below link to confirm you account."
