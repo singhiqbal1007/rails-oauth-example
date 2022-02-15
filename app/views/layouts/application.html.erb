@@ -44,9 +44,15 @@
     <% flash.each do |message_type, message| %>
       <div class="alert <%= alert_class(message_type) %> alert-dismissible fade show" role="alert">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <% if message_type.to_sym == :url %>
+        <% if message_type.to_sym == :confirm_url ||  message_type.to_sym == :reset_url%>
           <h4 class="alert-heading"><%= t('email_alert_heading') %></h4>
-          <p><%= t('email_alert_body') %></p>
+          <p><%= t('email_alert_body') %>
+          <% if message_type.to_sym == :confirm_url %>
+            <%= t('email_alert_confirm') %>
+          <% else %>
+              <%= t('email_alert_reset') %>
+          <% end %>
+          </p>
           <hr>
           <%= link_to(message, message)  %>
         <% else %>

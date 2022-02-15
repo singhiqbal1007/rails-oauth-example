@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
       # generate confirmation url
       url = edit_confirmation_url(token)
-      redirect_to root_path, flash: { notice: I18n.t('check_your_email'), url: url }
+      redirect_to root_path, flash: { notice: I18n.t('check_your_email'), confirm_url: url }
     else
       render :new, status: :unprocessable_entity
     end

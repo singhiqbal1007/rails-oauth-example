@@ -7,8 +7,9 @@ class ConfirmationsController < ApplicationController
     @user = User.find_by(email: params[:user][:email].downcase)
 
     if @user.present? && @user.unconfirmed?
-      @user.send_confirmation_email!
-      redirect_to root_path, notice: I18n.t('check_your_email')
+      token = @user.send_confirmation_email!
+      url = edit_confirmation_url(token)
+      redirect_to root_path, flash: { notice: I18n.t('check_your_email'), confirm_url: url }
     else
       redirect_to new_confirmation_path, alert: "We could not find a user with that email or that email has already been confirmed."
     end
