@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:edit, :destroy, :update]
+  before_action :authenticate_user!, only: [:edit, :destroy, :update, :show]
   before_action :redirect_if_authenticated, only: [:create, :new]
 
   # POST: sign up page
@@ -26,7 +26,6 @@ class UsersController < ApplicationController
   # GET: account page
   def edit
     @user = current_user
-    @active_sessions = @user.active_sessions.order(created_at: :desc)
   end
 
   # GET: sign up page
@@ -34,7 +33,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  # PUT: account page
+  # PUT: upgate account page
   def update
     @user = current_user
     @active_sessions = @user.active_sessions.order(created_at: :desc)
@@ -53,6 +52,12 @@ class UsersController < ApplicationController
       flash.now[:error] = "Incorrect password"
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  # GET: user account page
+  def show
+    @user = current_user
+    @active_sessions = @user.active_sessions.order(created_at: :desc)
   end
 
   private

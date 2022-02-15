@@ -33,26 +33,14 @@
         <% if user_signed_in? %>
           <!-- Avatar -->
           <div class="dropdown">
-            <a
-              class="dropdown-toggle d-flex align-items-center hidden-arrow"
-              href="#"
-              id="navbarDropdownMenuAvatar"
-              role="button"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                class="rounded-circle"
-                height="25"
-                alt="Black and White Portrait of a Man"
-                loading="lazy"
-                />
-            </a>
+            <a class="nav-link" id="avatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-user-circle fa-2x" style="color:#000000"></i></a>
             <ul
               class="dropdown-menu dropdown-menu-end"
-              aria-labelledby="navbarDropdownMenuAvatar"
+              aria-labelledby="avatar"
             >
+              <li>
+                <%= link_to "Settings", settings_path, class: "dropdown-item" %>
+              </li>
               <li>
                 <%= button_to "Logout", logout_path, method: :delete, class: "dropdown-item" %>
               </li>

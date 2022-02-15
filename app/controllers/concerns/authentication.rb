@@ -63,11 +63,17 @@ module Authentication
   # We call the before_action filter so that we have access to the current user before each request.
   # We also add this as a helper_method so that we have access to current_user in the views.
   def current_user
+    # check if session is active
     Current.user = if session[:current_active_session_id].present?
-      ActiveSession.find_by(id: session[:current_active_session_id])&.user
-    elsif cookies.permanent.encrypted[:remember_token].present?
-      ActiveSession.find_by(remember_token: cookies.permanent.encrypted[:remember_token])&.user
-    end
+                     # get the user for the session
+                     ActiveSession.find_by(id: session[:current_active_session_id])&.user
+                   elsif cookies.permanent.encrypted[:remember_token].present?
+                     # get session from cookies
+                     curr_session = ActiveSession.find_by(remember_token: cookies.permanent.encrypted[:remember_token])
+                     # store session id
+                     session[:current_active_session_id] = curr_session&.id
+                     ActiveSession.find_by(id: curr_session.id)&.user
+                   end
   end
 
   # The user_signed_in? method simply returns true or false depending on whether the user is signed in or not.

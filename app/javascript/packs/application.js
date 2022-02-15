@@ -11,8 +11,3 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
-
-// var alertList = document.querySelectorAll('.alert')
-// alertList.forEach(function (alert) {
-//     new bootstrap.Alert(alert)
-// })
