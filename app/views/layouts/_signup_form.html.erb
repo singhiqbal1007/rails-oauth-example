@@ -1,0 +1,29 @@
+<div class="form-floating mb-3">
+  <%= form.email_field :email, required: true, class: "form-control form-control-lg", id: "email", placeholder: "email@domain" %>
+  <%= form.label :email, 'Enter Email', class: "form-label", for: "email"%>
+</div>
+
+<div class="form-floating mb-4">
+  <%= form.password_field :password, required: true, class: "form-control form-control-lg", id: "password", placeholder: "password"  %>
+  <%= form.label :password, 'Create Password', class: "form-label", for: "password"%>
+</div>
+
+<div class="form-floating mb-4">
+  <%= form.password_field :password_confirmation, required: true, class: "form-control form-control-lg", id: "password_confirmation", placeholder: "password_confirmation" %>
+  <%= form.label :password_confirmation, 'Confirm Password', class: "form-label", for: "password_confirmation"%>
+</div>
+
+<!-- Submit button -->
+<button type="submit" class="btn btn-primary btn-lg btn-block">Create Account</button>
+
+<div class="divider d-flex align-items-center my-4">
+  <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+</div>
+
+<a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="#!" role="button">
+  <i class="fab fa-facebook-f me-2"></i>Signup with Facebook
+</a>
+
+<a class="btn btn-primary btn-lg btn-block" style="background-color: #55acee" href="#!" role="button">
+  <i class="fab fa-twitter me-2"></i>Signup with Twitter
+</a>

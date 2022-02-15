@@ -22,19 +22,10 @@ gem "jbuilder", "~> 2.7"
 # Use Active Model has_secure_password
 gem "bcrypt", "~> 3.1.7"
 
-# replace erb with haml
-gem "haml-rails", "~> 2.0"
-
 # use less instead of css
 gem 'less-rails', '~> 4.0.0'
 gem 'therubyracer'
 gem 'sprockets', '~> 3.0'
-
-# bootstrap
-gem 'bootstrap', '~> 5.1.3'
-gem 'jquery-rails'
-
-
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
