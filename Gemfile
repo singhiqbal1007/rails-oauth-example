@@ -30,6 +30,10 @@ gem 'less-rails', '~> 4.0.0'
 gem 'therubyracer'
 gem 'sprockets', '~> 3.0'
 
+# bootstrap
+gem 'bootstrap', '~> 5.1.3'
+gem 'jquery-rails'
+
 
 
 # Use Active Storage variant

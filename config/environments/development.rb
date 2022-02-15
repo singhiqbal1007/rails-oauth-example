@@ -78,4 +78,8 @@ Rails.application.configure do
 
   # compress assets
   # config.assets.compress = true
+
+  # config.reload_classes_only_on_change = false
+  # config.serve_static_assets = false
+  # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end

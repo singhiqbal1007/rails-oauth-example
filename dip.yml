@@ -56,7 +56,7 @@ interaction:
   mysql:
     description: Run mysql console. Use -A for quicker startup by skipping table and column name completion.
     service: db
-    command: mysql --protocol=tcp -hdb -uroot -proot rails-oauth-practice-development
+    command: mysql --protocol=tcp -hdb -uroot -proot rails_oauth_practice_development
 
   "redis-cli":
     description: Run Redis console
