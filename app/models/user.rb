@@ -89,13 +89,16 @@ class User < ApplicationRecord
     confirmation_token = generate_confirmation_token
     UserMailer.confirmation(self, confirmation_token).deliver_now
 
-    # we will show this confirmation token in the flash message for demo
+    # we will show this token in the flash message for demo
     confirmation_token
   end
 
   def send_password_reset_email!
     password_reset_token = generate_password_reset_token
     UserMailer.password_reset(self, password_reset_token).deliver_now
+
+    # we will show this token in the flash message for demo
+    password_reset_token
   end
 
   # check if unconfirmed_email column is present

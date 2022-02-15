@@ -5,20 +5,21 @@ class PasswordsController < ApplicationController
     @user = User.find_by(email: params[:user][:email].downcase)
     if @user.present?
       if @user.confirmed?
-        @user.send_password_reset_email!
-        redirect_to root_path, notice: "If that user exists we've sent instructions to their email."
+        token = @user.send_password_reset_email!
+        url = edit_password_url(token)
+        redirect_to root_path, flash: { notice: I18n.t('check_your_email'), url: url }
       else
-        redirect_to new_confirmation_path, alert: "Please confirm your email first."
+        redirect_to new_confirmation_path, alert: I18n.t('unconfirmed_email')
       end
     else
-      redirect_to root_path, notice: "If that user exists we've sent instructions to their email."
+      redirect_back fallback_location: root_path, alert: I18n.t('email_does_not_exists')
     end
   end
 
   def edit
     @user = User.find_signed(params[:password_reset_token], purpose: :reset_password)
     if @user.present? && @user.unconfirmed?
-      redirect_to new_confirmation_path, alert: "You must confirm your email before you can sign in."
+      redirect_to new_confirmation_path, alert: I18n.t('unconfirmed_email')
     elsif @user.nil?
       redirect_to new_password_path, alert: "Invalid or expired token."
     end
@@ -31,7 +32,7 @@ class PasswordsController < ApplicationController
     @user = User.find_signed(params[:password_reset_token], purpose: :reset_password)
     if @user
       if @user.unconfirmed?
-        redirect_to new_confirmation_path, alert: "You must confirm your email before you can sign in."
+        redirect_to new_confirmation_path, alert: I18n.t('unconfirmed_email')
       elsif @user.update(password_params)
         redirect_to login_path, notice: "Sign in."
       else

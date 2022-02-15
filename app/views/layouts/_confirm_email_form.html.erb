@@ -1,7 +1,8 @@
-<%= form_with url: passwords_path, scope: :user do |form| %>
+<%= form_with model: @user, url: confirmations_path do |form| %>
   <div class="form-floating mb-3">
     <%= form.email_field :email, required: true, class: "form-control form-control-lg", id: "email", placeholder: "email@domain" %>
     <%= form.label :email, 'Email', class: "form-label", for: "email"%>
   </div>
-  <button type="submit" name="commit" value="Reset Password" data-disable-with="Reset Password" class="btn btn-primary btn-lg btn-block">Reset Password</button>
+  <button type="submit" name="commit" value="Reset Password" data-disable-with="Confirm Email" class="btn btn-primary btn-lg btn-block">Send Confirmation Email</button>
 <% end %>
+

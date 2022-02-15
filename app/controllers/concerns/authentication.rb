@@ -11,7 +11,7 @@ module Authentication
 
   def authenticate_user!
     store_location
-    redirect_to login_path, alert: 'You need to login to access that page.' unless user_signed_in?
+    redirect_to login_path, alert: 'You need to be logged in to access that page.' unless user_signed_in?
   end
 
   def login(user)
@@ -46,6 +46,7 @@ module Authentication
     redirect_to root_path, alert: 'You are already logged in.' if user_signed_in?
   end
 
+  # save session in cookies if remember me is checked
   def remember(active_session)
     cookies.permanent.encrypted[:remember_token] = active_session.remember_token
   end

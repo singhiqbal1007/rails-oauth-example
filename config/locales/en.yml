@@ -30,6 +30,11 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  check_confirmation_email: "Check your email for confirmation instructions"
+  check_your_email: "We have sent further instructions to your email"
   email_alert_heading: "For demo only"
   email_alert_body: "We do not send actual email in this demo. You can use below link to confirm you account."
+  email_does_not_exists: "Email does not exists"
+  unconfirmed_email: "Your email is not confirmed. Please confirm your email first"
+  account_confirmed: "Your account has been confirmed."
+  something_went_wrong: "Something went wrong"
+  invalid_token: "Invalid Token"

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
       # generate confirmation url
       url = edit_confirmation_url(token)
-      redirect_to root_path, flash: { notice: I18n.t('check_confirmation_email'), url: url }
+      redirect_to root_path, flash: { notice: I18n.t('check_your_email'), url: url }
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
       if @user.update(update_user_params)
         if params[:user][:unconfirmed_email].present?
           @user.send_confirmation_email!
-          redirect_to root_path, flash: { notice: I18n.t('check_confirmation_email') }
+          redirect_to root_path, flash: { notice: I18n.t('check_your_email') }
         else
           redirect_to root_path, notice: "Account updated."
         end
