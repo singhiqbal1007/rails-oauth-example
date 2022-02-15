@@ -1,6 +1,5 @@
-pwd
-rm -f ./tmp/pids/server.pid
+rm -f /rails_oauth_practice/tmp/pids/server.pid
 if [[ "${REMOVE_GEMFILE_LOCK}" == "true" ]]; then
-  rm -rf ./Gemfile.lock
+  rm -f /rails_oauth_practice/Gemfile.lock
 fi
 bundle install

@@ -50,12 +50,10 @@
     <orderEntry type="library" scope="PROVIDED" name="crass (v1.0.6, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.10.0, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubis (v2.7.0, rbenv: 2.7.4) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="execjs (v2.8.1, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.15.4, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.0.0, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="haml-rails (v2.0.1, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="html2haml (v2.2.0, rbenv: 2.7.4) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="jquery-rails (v4.4.0, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="less (v2.6.0, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="libv8 (v3.16.14.19, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="listen (v3.7.0, rbenv: 2.7.4) [gem]" level="application" />
