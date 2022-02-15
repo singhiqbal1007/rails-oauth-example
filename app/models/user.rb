@@ -1,6 +1,12 @@
 class User < ApplicationRecord
+
+  # confirmation token is a signed_id, and is set to expire in 10 minutes.
   CONFIRMATION_TOKEN_EXPIRATION = 10.minutes
+
+  # send mail from this address
   MAILER_FROM_EMAIL = "no-reply@example.com"
+
+  # password reset token is a signed_id, and is set to expire in 10 minutes.
   PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes
 
   attr_accessor :current_password
@@ -55,6 +61,9 @@ class User < ApplicationRecord
     confirmed_at.present?
   end
 
+  # This method will send unconfirmed_email if user email is not confirmed
+  # This will send user email if email is confirmed
+  # Therefore, this same method can be used to reset password.
   def confirmable_email
     if unconfirmed_email.present?
       unconfirmed_email
@@ -63,14 +72,19 @@ class User < ApplicationRecord
     end
   end
 
+  # signed token to generate confirmation
   def generate_confirmation_token
+    # Returns a signed id that's generated using a preconfigured +ActiveSupport::MessageVerifier+ instance.
+    # Part of activerecord gem.
     signed_id expires_in: CONFIRMATION_TOKEN_EXPIRATION, purpose: :confirm_email
   end
 
+  # signed token to reset password
   def generate_password_reset_token
     signed_id expires_in: PASSWORD_RESET_TOKEN_EXPIRATION, purpose: :reset_password
   end
 
+  # send confirmation email using UserMailer
   def send_confirmation_email!
     confirmation_token = generate_confirmation_token
     UserMailer.confirmation(self, confirmation_token).deliver_now
@@ -91,6 +105,7 @@ class User < ApplicationRecord
     !confirmed?
   end
 
+  # confirmation mail or resetting password
   def unconfirmed_or_reconfirming?
     unconfirmed? || reconfirming?
   end

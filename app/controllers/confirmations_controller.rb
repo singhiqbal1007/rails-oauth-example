@@ -1,6 +1,8 @@
 class ConfirmationsController < ApplicationController
   before_action :redirect_if_authenticated, only: [:create, :new]
 
+  # create action will resend confirmation instructions to an unconfirmed user
+  # if user is not present it will flash alert
   def create
     @user = User.find_by(email: params[:user][:email].downcase)
 
@@ -12,6 +14,11 @@ class ConfirmationsController < ApplicationController
     end
   end
 
+  # The edit action is used to confirm a user's email
+  # This will be the page that a user lands on when they click the confirmation link in their email.
+  # The confirmation_token is randomly generated and can't be guessed or tampered with unlike an email or numeric ID.
+  # This is also why we added param: :confirmation_token as a named route parameter
+  # The :param option overrides the default resource identifier :id
   def edit
     @user = User.find_signed(params[:confirmation_token], purpose: :confirm_email)
     if @user.present? && @user.unconfirmed_or_reconfirming?

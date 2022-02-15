@@ -1,3 +1,5 @@
+# The Authentication Concern provides an interface for logging the user in and out.
+# We load it into the ApplicationController so that it will be used across the whole application.
 module Authentication
   extend ActiveSupport::Concern
 
@@ -9,7 +11,7 @@ module Authentication
 
   def authenticate_user!
     store_location
-    redirect_to login_path, alert: "You need to login to access that page." unless user_signed_in?
+    redirect_to login_path, alert: 'You need to login to access that page.' unless user_signed_in?
   end
 
   def login(user)
@@ -41,7 +43,7 @@ module Authentication
   # If they are, they'll be redirected to the root_path.
   # This will be useful on pages an authenticated user should not be able to access, such as the login page.
   def redirect_if_authenticated
-    redirect_to root_path, alert: "You are already logged in." if user_signed_in?
+    redirect_to root_path, alert: 'You are already logged in.' if user_signed_in?
   end
 
   def remember(active_session)
