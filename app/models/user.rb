@@ -29,6 +29,13 @@ class User < ApplicationRecord
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}, presence: true, uniqueness: true
   validates :unconfirmed_email, format: {with: URI::MailTo::EMAIL_REGEXP, allow_blank: true}
 
+  # This method is present by default in rails 7.1
+  # This class method serves to find a user using the non-password attributes (such as email),
+  # and then authenticates that record using the password attributes.
+  # Regardless of whether a user is found or authentication succeeds,
+  # authenticate_by will take the same amount of time.
+  # This prevents timing-based enumeration attacks,
+  # wherein an attacker can determine if a password record exists even without knowing the password.
   def self.authenticate_by(attributes)
     passwords, identifiers = attributes.to_h.partition do |name, value|
       !has_attribute?(name) && has_attribute?("#{name}_digest")
@@ -111,7 +118,9 @@ class User < ApplicationRecord
     !confirmed?
   end
 
-  # confirmation mail or resetting password
+  # We add @user.unconfirmed_or_reconfirming? to the conditional to ensure
+  # that only unconfirmed users or users who are reconfirming can have access
+  # This is necessary since we're now allowing users to confirm new email addresses.
   def unconfirmed_or_reconfirming?
     unconfirmed? || reconfirming?
   end

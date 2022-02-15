@@ -41,3 +41,4 @@ en:
   something_went_wrong: "Something went wrong"
   invalid_token: "Invalid Token"
   password_changed: "Password Changed Successfully"
+  access_denied: 'Please log in first'

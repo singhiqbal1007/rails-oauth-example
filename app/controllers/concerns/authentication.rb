@@ -9,13 +9,18 @@ module Authentication
     helper_method :user_signed_in?
   end
 
+  # The authenticate_user! method can be called to ensure
+  # that an anonymous user cannot access a page that requires a user to be logged in.
   def authenticate_user!
     store_location
-    redirect_to login_path, alert: 'You need to be logged in to access that page.' unless user_signed_in?
+    redirect_to login_path, alert: I18n.t('access_denied') unless user_signed_in?
   end
 
   def login(user)
     # The reset_session method resets the session to account for session fixation
+    # so if there is session fixed in the browser it will be removed
+    # and new session will be created everytime login is called
+    # https://guides.rubyonrails.org/security.html#session-fixation
     reset_session
 
     # We set the user's ID in the session so that we can have access to the user across requests.
@@ -43,7 +48,7 @@ module Authentication
   # If they are, they'll be redirected to the root_path.
   # This will be useful on pages an authenticated user should not be able to access, such as the login page.
   def redirect_if_authenticated
-    redirect_to root_path, alert: 'You are already logged in.' if user_signed_in?
+    redirect_to account_path if user_signed_in?
   end
 
   # save session in cookies if remember me is checked
@@ -71,6 +76,8 @@ module Authentication
     Current.user.present?
   end
 
+  # store the user path in the session
+  # so when user logs in we redirect to that path
   def store_location
     session[:user_return_to] = request.original_url if request.get? && request.local?
   end
