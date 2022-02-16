@@ -6,5 +6,4 @@ ADD Gemfile /rails_oauth_practice/Gemfile
 ADD Gemfile.lock /rails_oauth_practice/Gemfile.lock
 RUN bundle install
 RUN npm install --global yarn
-RUN bundle exec rails webpacker:install
 ADD . /rails_oauth_practice
