@@ -1,0 +1,45 @@
+# docker-compose file to run production environment locally
+version: '3'
+
+volumes:
+  mysql_data_prod:
+
+networks:
+  example-network_prod:
+    driver: bridge
+
+services:
+  db_prod:
+    image: mysql:8.0
+    container_name: db_prod
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data_prod:/var/lib/mysql
+    networks:
+      - example-network_prod
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--silent" ]
+
+  web_prod:
+    image: rails-oauth-example_web_prod:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    networks:
+      - example-network_prod
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db_prod
+    links:
+      - db_prod
+    restart: unless-stopped
+    environment:
+      PRODUCTION_DB_USER: root
+      PRODUCTION_DB_PASSWORD: root
+      DB_HOST: db_prod

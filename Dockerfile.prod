@@ -1,1 +1,22 @@
 # Dockerfile for production environment
+FROM ruby:2.7.4
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev npm nodejs
+RUN npm install --global yarn
+
+ENV RAILS_ENV production
+ENV RAILS_SERVE_STATIC_FILES true
+ENV RAILS_LOG_TO_STDOUT true
+
+RUN mkdir /rails_oauth_practice
+WORKDIR /rails_oauth_practice
+ADD Gemfile /rails_oauth_practice/Gemfile
+ADD Gemfile.lock /rails_oauth_practice/Gemfile.lock
+RUN bundle config set without 'development test'
+RUN bundle config --global frozen 1
+RUN bundle install
+
+ADD . /rails_oauth_practice
+RUN RAILS_ENV=production bundle exec rake assets:precompile
+
+EXPOSE 3000
+CMD ["rails", "server", "-b", "0.0.0.0"]

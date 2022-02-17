@@ -12,7 +12,8 @@ class UserMailer < ApplicationMailer
     @user = user
     @confirmation_token = confirmation_token
 
-    mail to: @user.confirmable_email, subject: "Confirmation Instructions"
+    # we are not sending mail actual mail in the demo
+    # mail to: @user.confirmable_email, subject: "Confirmation Instructions"
   end
 
   # send mail to reset password
@@ -20,6 +21,7 @@ class UserMailer < ApplicationMailer
     @user = user
     @password_reset_token = password_reset_token
 
-    mail to: @user.email, subject: "Password Reset Instructions"
+    # we are not sending mail actual mail in the demo
+    # mail to: @user.email, subject: "Password Reset Instructions"
   end
 end
