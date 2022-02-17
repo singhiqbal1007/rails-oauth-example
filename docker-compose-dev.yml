@@ -1,0 +1,62 @@
+version: '3'
+
+volumes:
+  mysql_data_dev:
+
+networks:
+  example-network_dev:
+    driver: bridge
+
+services:
+  db_dev:
+    image: mysql:8.0
+    container_name: db_dev
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+    networks:
+      - example-network_dev
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--silent" ]
+
+  webpacker:
+    image: rails-oauth-example_web_dev:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: webpack serve --host 0.0.0.0 --mode development --inline
+    networks:
+      - example-network_dev
+    volumes:
+      - .:/rails_oauth_practice
+    ports:
+      - 3035:3035
+
+  web_dev:
+    image: rails-oauth-example_web_dev:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "/rails_oauth_practice/init_dev.sh && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes: 
+      - .:/rails_oauth_practice
+    networks:
+      - example-network_dev
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - db_dev
+      - webpacker
+    links:
+      - db_dev
+      - webpacker
+    restart: unless-stopped
+    environment:
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: db_dev

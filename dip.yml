@@ -3,43 +3,48 @@ version: "4.1"
 environment:
   RAILS_ENV: development
 
+compose:
+  files:
+    - docker-compose-dev.yml
+  project_name: rails-oauth-example
+
 interaction:
   sh:
     description: Open a Bash shell within a Rails container (with dependencies up)
-    service: web
+    service: web_dev
     command: /bin/bash
 
   bash:
     description: Run an arbitrary script within a container (or open a shell without deps)
-    service: web
+    service: web_dev
     command: /bin/bash
     compose_run_options: [no-deps]
 
   bundle:
     description: Run Bundler commands
-    service: web
+    service: web_dev
     command: bundle
     compose_run_options: [no-deps]
 
   rake:
     description: Run Rake commands
-    service: web
+    service: web_dev
     command: bundle exec rake
 
   rails:
     description: Run Rails commands
-    service: web
+    service: web_dev
     command: bundle exec rails
     subcommands:
       s:
         description: Run Rails server available at http://localhost:3000
-        service: web
+        service: web_dev
         compose:
           run_options: [service-ports, use-aliases]
 
   rspec:
     description: Run Rails tests
-    service: web
+    service: web_dev
     environment:
       RAILS_ENV: test
       COUPA_DISABLE_EAGER_LOAD: true
@@ -49,20 +54,28 @@ interaction:
 
   rubocop:
     description: Run Rubocop
-    service: web
+    service: web_dev
     command: bundle exec rubocop
     compose_run_options: [no-deps]
 
   mysql:
     description: Run mysql console. Use -A for quicker startup by skipping table and column name completion.
-    service: db
-    command: mysql --protocol=tcp -hdb -uroot -proot rails_oauth_practice_development
+    service: db_dev
+    command: mysql --protocol=tcp -hdb_dev -uroot -proot rails_oauth_practice_development
 
-  "redis-cli":
-    description: Run Redis console
-    service: redis
-    command: redis-cli -h redis
+  db_create:
+    description: create db
+    service:
+     - db_dev
+     - web_dev
+    command: bundle exec rails db:create
+
+  clean_cache:
+    description: Delete cache files on the host machine
+    command: rm -rf $(pwd)/tmp/cache/*
+
 
   provision:
     - dip compose down --volumes
+    - dip clean_cache
     - dip compose up
