@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: webpack serve --host 0.0.0.0 --mode development --inline
+    command: yarn && rm -rf /rails_oauth_practice/public/packs webpack serve --host 0.0.0.0 --mode development
     networks:
       - example-network_dev
     volumes:

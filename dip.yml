@@ -63,19 +63,6 @@ interaction:
     service: db_dev
     command: mysql --protocol=tcp -hdb_dev -uroot -proot rails_oauth_practice_development
 
-  db_create:
-    description: create db
-    service:
-     - db_dev
-     - web_dev
-    command: bundle exec rails db:create
-
   clean_cache:
     description: Delete cache files on the host machine
     command: rm -rf $(pwd)/tmp/cache/*
-
-
-  provision:
-    - dip compose down --volumes
-    - dip clean_cache
-    - dip compose up
