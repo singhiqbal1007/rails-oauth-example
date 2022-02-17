@@ -83,6 +83,9 @@ test:
 #
 production:
   <<: *default
+  # url will be used by heroku
+  url: <%= ENV['DATABASE_URL'] %>
+  # below settings will be used by local setup
   database: rails_oauth_practice_production
   username: <%= ENV['PRODUCTION_DB_USER'] %>
   password: <%= ENV['PRODUCTION_DB_PASSWORD'] %>
