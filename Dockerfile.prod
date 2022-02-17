@@ -1,6 +1,6 @@
 # Dockerfile for production environment
-FROM ruby:2.7.4
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev npm nodejs
+FROM ruby:2.7.4-slim
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev npm nodejs ruby-mysql2 default-libmysqlclient-dev
 RUN npm install --global yarn
 
 ENV RAILS_ENV production
