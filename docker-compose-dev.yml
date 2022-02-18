@@ -58,3 +58,5 @@ services:
       DB_USER: root
       DB_PASSWORD: root
       DB_HOST: db_dev
+      DB_NAME: rails_oauth_example_development
+      DB_TEST_NAME: rails_oauth_example_test

@@ -21,12 +21,12 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  database: <%= ENV['DB_NAME'] %>
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>
 
 development:
   <<: *default
-  database: rails_oauth_practice_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -60,7 +60,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: rails_oauth_practice_test
+  database: <%= ENV['DB_TEST_NAME'] %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -85,7 +85,3 @@ production:
   <<: *default
   # url will be used by heroku
   url: <%= ENV['DATABASE_URL'] %>
-  # below settings will be used by local setup
-  database: rails_oauth_practice_production
-  username: <%= ENV['PRODUCTION_DB_USER'] %>
-  password: <%= ENV['PRODUCTION_DB_PASSWORD'] %>

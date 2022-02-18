@@ -38,6 +38,7 @@ services:
       - db_prod
     restart: unless-stopped
     environment:
-      PRODUCTION_DB_USER: root
-      PRODUCTION_DB_PASSWORD: root
+      DB_USER: root
+      DB_PASSWORD: root
       DB_HOST: db_prod
+      DB_NAME: rails_oauth_example_production
