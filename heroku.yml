@@ -7,5 +7,7 @@ build:
     web: Dockerfile.prod
   config:
     RAILS_ENV: production
+release:
+  command: bundle exec rails db:migrate
 run:
   web: bundle exec puma -C config/puma.rb

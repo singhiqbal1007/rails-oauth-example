@@ -17,6 +17,7 @@ RUN gem install bundler:2.2.32
 RUN bundle install
 
 ADD . /rails_oauth_practice
+EDITOR=vim rails credentials:edit
 RUN RAILS_ENV=production bundle exec rake assets:precompile
 
 EXPOSE 3000
