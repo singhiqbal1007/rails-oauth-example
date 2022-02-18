@@ -27,18 +27,19 @@ jobs:
           npm install
           npm install -g yarn
 
-#      - name: Run rubocop
-#        run: bundle exec rubocop
-#
-#      - name: Run brakeman
-#        run: bundle exec brakeman
+      #      - name: Run rubocop
+      #        run: bundle exec rubocop
+      #
+      #      - name: Run brakeman
+      #        run: bundle exec brakeman
 
       - name: Setup database
         env:
           RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
           DB_HOST: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          DB_USER: postgres
+          DB_PASSWORD: postgres
           DB_TEST_NAME: test_database
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
@@ -47,9 +48,10 @@ jobs:
       - name: Run rspec
         env:
           RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
           DB_HOST: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          DB_USER: postgres
+          DB_PASSWORD: postgres
           DB_TEST_NAME: test_database
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
         run: bundle exec rspec
