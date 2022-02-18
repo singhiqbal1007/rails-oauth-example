@@ -6,6 +6,6 @@ WORKDIR /rails_oauth_practice
 ADD Gemfile /rails_oauth_practice/Gemfile
 ADD Gemfile.lock /rails_oauth_practice/Gemfile.lock
 RUN gem install bundler:2.2.32
-RUN bundle config set --local path './vendor/bundle'
+RUN bundle install
 RUN npm install --global yarn webpack webpack-cli
 ADD . /rails_oauth_practice
