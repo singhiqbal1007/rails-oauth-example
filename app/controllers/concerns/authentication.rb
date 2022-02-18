@@ -70,9 +70,11 @@ module Authentication
                    elsif cookies.permanent.encrypted[:remember_token].present?
                      # get session from cookies
                      curr_session = ActiveSession.find_by(remember_token: cookies.permanent.encrypted[:remember_token])
-                     # store session id
-                     session[:current_active_session_id] = curr_session&.id
-                     ActiveSession.find_by(id: curr_session.id)&.user
+                     unless curr_session.nil?
+                       # store session id
+                       session[:current_active_session_id] = curr_session.id
+                       ActiveSession.find_by(id: curr_session.id)&.user
+                     end
                    end
   end
 
