@@ -106,20 +106,20 @@ RSpec.configure do |config|
 =end
 
 
-  # # capybara setup
-  # Capybara.app = '127.0.0.1'
-  #
-  # Capybara.register_driver :chrome do |app|
-  #   Capybara::Selenium::Driver.new(app, :browser => :chrome)
-  # end
-  #
-  # Capybara.current_driver = :chrome
-  # Capybara.javascript_driver = :chrome
+  # capybara setup
+  Capybara.app = '127.0.0.1'
 
-  if ENV['HEADLESS'] == 'on'
-    require 'headless'
-    headless = Headless.new
-    headless.start
+  Capybara.register_driver :chrome_headless do |app|
+    Capybara::Selenium::Driver.new app,
+                                   browser: :chrome,
+                                   clear_session_storage: true,
+                                   clear_local_storage: true,
+                                   capabilities: [Selenium::WebDriver::Chrome::Options.new(
+                                     args: %w[--headless --disable-infobars --disable-dev-shm-usage --no-sandbox --window-size=1920,1080],
+                                     )]
   end
+
+  Capybara.current_driver = :chrome_headless
+  Capybara.javascript_driver = :chrome_headless
 
 end

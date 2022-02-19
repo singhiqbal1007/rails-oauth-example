@@ -8,7 +8,7 @@ module SessionPage
     element :sign_in_button, "button[type='submit']"
 
     def log_in(user)
-      email_input.set user.login
+      email_input.set user.email
       password_input.set user.password
       sign_in_button.click
     end

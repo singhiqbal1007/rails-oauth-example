@@ -53,8 +53,8 @@ end
 
 group :test do
   # Adds support for site-prism, Capybara system testing and selenium driver
-  gem 'headless', '~> 2.3.1'
-  gem "chromedriver-helper", "1.0.0"
+  # gem 'headless', '~> 2.3.1'
+  # gem "chromedriver-helper", "1.0.0"
   gem "capybara", ">= 3.26"
   gem 'site_prism', '~> 3.7', '>= 3.7.3'
   gem "selenium-webdriver"
