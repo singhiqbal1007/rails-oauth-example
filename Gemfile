@@ -52,11 +52,13 @@ group :development do
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
+  # Adds support for site-prism, Capybara system testing and selenium driver
+  gem 'headless', '~> 2.3.1'
+  gem "chromedriver-helper", "1.0.0"
   gem "capybara", ">= 3.26"
+  gem 'site_prism', '~> 3.7', '>= 3.7.3'
   gem "selenium-webdriver"
   # Easy installation and use of web drivers to run system tests with browsers
-  gem "webdrivers"
   gem 'rspec-rails'
   gem 'factory_bot_rails', '~> 6.2'
 end

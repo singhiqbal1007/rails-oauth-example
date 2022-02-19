@@ -13,7 +13,19 @@
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'capybara'
+require 'capybara/dsl'
+# require 'capybara/cucumber'
+require 'selenium-webdriver'
+require 'site_prism'
+require 'site_prism/all_there'
+# require 'capybara/rails'
 require './spec/support/sessions_helper'
+[
+  './spec/pages/*.rb'
+].each { |pattern| Dir[pattern].sort.each { |f| require f } }
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -45,8 +57,8 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-# The settings below are suggested to provide a good initial experience
-# with RSpec, but feel free to customize to your heart's content.
+  # The settings below are suggested to provide a good initial experience
+  # with RSpec, but feel free to customize to your heart's content.
 =begin
   # This allows you to limit a spec run to individual examples or groups
   # you care about by tagging them with `:focus` metadata. When nothing
@@ -92,4 +104,22 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+
+  # # capybara setup
+  # Capybara.app = '127.0.0.1'
+  #
+  # Capybara.register_driver :chrome do |app|
+  #   Capybara::Selenium::Driver.new(app, :browser => :chrome)
+  # end
+  #
+  # Capybara.current_driver = :chrome
+  # Capybara.javascript_driver = :chrome
+
+  if ENV['HEADLESS'] == 'on'
+    require 'headless'
+    headless = Headless.new
+    headless.start
+  end
+
 end
