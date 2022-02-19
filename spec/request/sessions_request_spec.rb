@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe 'Sessions', type: :request do
   include SessionsHelper
 
-  describe 'GET /login' do
+  describe '/login' do
     let(:confirmed_user) { create(:user, :confirmed_now) }
     let(:unconfirmed_user) { create(:user) }
 
