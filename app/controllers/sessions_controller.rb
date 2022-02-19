@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     if @user
       # if user email is not confirmed show alert
       if @user.unconfirmed?
-        redirect_to login_path, alert: "Incorrect email or password."
+        redirect_to login_path, alert: I18n.t('login_failed')
       else
         # get user return to path from session
         after_login_path = session[:user_return_to] || account_path
@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
       end
     # show alert if user does not exists
     else
-      flash.now[:alert] = "Incorrect email or password."
+      flash.now[:alert] = I18n.t('login_failed')
       render :new, status: :unprocessable_entity
     end
   end
