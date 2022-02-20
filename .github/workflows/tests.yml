@@ -45,7 +45,7 @@ jobs:
         run: |
           bundle exec rails db:create
 
-      - name: Run rspec
+      - name: Run Model Specs
         env:
           RAILS_ENV: test
           POSTGRES_HOST_AUTH_METHOD: trust
@@ -54,4 +54,26 @@ jobs:
           DB_PASSWORD: postgres
           DB_TEST_NAME: test_database
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-        run: bundle exec rspec
+        run: bundle exec rake model_specs
+
+      - name: Run Request Specs
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_TEST_NAME: test_database
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: bundle exec rake request_specs
+
+      - name: Run Views Specs
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_TEST_NAME: test_database
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: bundle exec rake views_specs

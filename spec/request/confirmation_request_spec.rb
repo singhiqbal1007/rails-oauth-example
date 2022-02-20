@@ -19,7 +19,7 @@ RSpec.describe 'ActiveSession', type: :request do
       get edit_confirmation_path(confirmation_token)
 
       expect(unconfirmed_user.reload.confirmed?).to eq(true)
-      expect(unconfirmed_user.reload.confirmed_at).to eq(Time.current)
+      expect(unconfirmed_user.reload.confirmed_at).to be_within(1.second).of Time.current
       expect(response).to redirect_to(root_path)
     end
 
@@ -30,7 +30,7 @@ RSpec.describe 'ActiveSession', type: :request do
       get edit_confirmation_path(confirmation_token)
 
       expect(reconfirmed_user.reload.confirmed?).to eq(true)
-      expect(reconfirmed_user.reload.confirmed_at).to eq(Time.current)
+      expect(reconfirmed_user.reload.confirmed_at).to be_within(1.second).of Time.current
       expect(unconfirmed_email).to eq(reconfirmed_user.reload.email)
       expect(reconfirmed_user.reload.unconfirmed_email).to be_nil
       expect(response).to redirect_to(root_path)
