@@ -9,6 +9,28 @@ feature 'Basic Signup', type: :feature, js: true do
 
   given!(:new_confirmed_user) { build(:user, :with_password_confirmation) }
   given!(:new_unconfirmed_user) { build(:user, :with_password_confirmation) }
+  given!(:confirmed_user) { create(:user, :confirmed_now, :with_password_confirmation) }
+  given!(:unconfirmed_user) { create(:user, :with_password_confirmation) }
+
+  scenario 'Signup with already present confirmed email' do
+    signup_page.load
+    signup_page.sign_up(confirmed_user)
+    expect(signup_page.alert).to have_text 'Email has already been taken'
+  end
+
+  scenario 'Signup with already present unconfirmed email' do
+    signup_page.load
+    signup_page.sign_up(unconfirmed_user)
+    expect(signup_page.alert).to have_text 'Email has already been taken'
+  end
+
+  scenario 'Signup with wrong confirmation password' do
+    signup_page.load
+    unconfirmed_user.email = 'random@email.com'
+    unconfirmed_user.password_confirmation = 'wrong'
+    signup_page.sign_up(unconfirmed_user)
+    expect(signup_page.alert).to have_text "Password confirmation doesn't match Password"
+  end
 
   scenario 'Signup user, confirm and login' do
     signup_page.load

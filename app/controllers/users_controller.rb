@@ -14,6 +14,7 @@ class UsersController < ApplicationController
       url = edit_confirmation_url(token)
       redirect_to root_path, flash: { notice: I18n.t('check_your_email'), confirm_url: url }
     else
+      flash.now[:alert] = @user.errors.full_messages
       render :new, status: :unprocessable_entity
     end
   end
