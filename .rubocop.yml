@@ -194,3 +194,5 @@ Rails/BulkChangeTable:
   Enabled: false
 Rails/FilePath:
   Enabled: false
+Rails/OutputSafety:
+  Enabled: false

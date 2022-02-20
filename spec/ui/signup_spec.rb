@@ -12,7 +12,6 @@ feature 'Basic Signup', type: :feature, js: true do
   given!(:confirmed_user) { create(:user, :confirmed_now, :with_password_confirmation) }
   given!(:unconfirmed_user) { create(:user, :with_password_confirmation) }
 
-
   scenario 'Signup with already present confirmed email' do
     signup_page.load
     signup_page.sign_up(confirmed_user)
