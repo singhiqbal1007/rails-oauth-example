@@ -3,5 +3,6 @@ module AccountPage
     set_url '/account'
 
     element :heading, '.mt-3'
+    element :logout_from_everywhere, "input[value='Log out from everywhere']"
   end
 end

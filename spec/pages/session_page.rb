@@ -6,6 +6,8 @@ module SessionPage
     element :password_input, "input[id='password']"
     element :remember_me_checkbox, "input[id='user_remember_me']"
     element :sign_in_button, "button[type='submit']"
+    element :alert, "div[role='alert']"
+    element :email_link, "a[id='email_link']"
 
     def log_in(user)
       email_input.set user.email

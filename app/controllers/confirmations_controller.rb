@@ -11,7 +11,7 @@ class ConfirmationsController < ApplicationController
       url = edit_confirmation_url(token)
       redirect_to root_path, flash: { notice: I18n.t('check_your_email'), confirm_url: url }
     else
-      redirect_to new_confirmation_path, alert: "We could not find a user with that email or that email has already been confirmed."
+      redirect_to new_confirmation_path, alert: I18n.t('confirmation_email_wrong')
     end
   end
 
