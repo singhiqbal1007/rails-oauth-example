@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
-  before_action :redirect_if_authenticated, only: [:create, :new]
+  before_action :redirect_if_authenticated, only: %i[create new]
   before_action :authenticate_user!, only: [:destroy]
 
   # POST: create session i.e post request on login form
@@ -10,20 +12,20 @@ class SessionsController < ApplicationController
     if @user
       # if user email is not confirmed show alert
       if @user.unconfirmed?
-        redirect_to login_path, alert: "Incorrect email or password."
+        redirect_to login_path, alert: I18n.t('login_failed')
       else
         # get user return to path from session
         after_login_path = session[:user_return_to] || account_path
         # login the user
         active_session = login @user
         # save session in cookies if remember me is checked
-        remember(active_session) if params[:user][:remember_me] == "1"
+        remember(active_session) if params[:user][:remember_me] == '1'
         # redirect to the after_login_path
         redirect_to after_login_path
       end
     # show alert if user does not exists
     else
-      flash.now[:alert] = "Incorrect email or password."
+      flash.now[:alert] = I18n.t('login_failed')
       render :new, status: :unprocessable_entity
     end
   end
@@ -36,6 +38,5 @@ class SessionsController < ApplicationController
   end
 
   # GET: login page
-  def new
-  end
+  def new; end
 end

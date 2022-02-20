@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PasswordsController < ApplicationController
   before_action :redirect_if_authenticated
 
@@ -25,8 +27,7 @@ class PasswordsController < ApplicationController
     end
   end
 
-  def new
-  end
+  def new; end
 
   def update
     @user = User.find_signed(params[:password_reset_token], purpose: :reset_password)

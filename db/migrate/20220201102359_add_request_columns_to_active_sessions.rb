@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRequestColumnsToActiveSessions < ActiveRecord::Migration[6.1]
   def change
     add_column :active_sessions, :user_agent, :string

@@ -1,0 +1,78 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_database
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.4
+      - name: Setup app dependencies
+        run: |
+          gem install bundler:2.2.32
+          bundle install --jobs 4 --retry 3
+          npm install
+          npm install -g yarn
+      - name: Setup database
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_TEST_NAME: test_database
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: |
+          bundle exec rails db:create
+
+      - name: Run Model Specs
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_TEST_NAME: test_database
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: bundle exec rake model_specs
+
+      - name: Run Request Specs
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_TEST_NAME: test_database
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: bundle exec rake request_specs
+
+      - name: Run Views Specs
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST_AUTH_METHOD: trust
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_TEST_NAME: test_database
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: bundle exec rake views_specs

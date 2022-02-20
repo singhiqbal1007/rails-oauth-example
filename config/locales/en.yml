@@ -32,13 +32,15 @@
 en:
   check_your_email: "We have sent further instructions to your email"
   email_alert_heading: "For demo only"
-  email_alert_body: "We do not send actual email in this demo."
+  email_alert_body: "We do not send actual email in this demo"
   email_alert_confirm: "You can use the below link to confirm you account"
   email_alert_reset: "You can use the below link to reset your password"
   email_does_not_exists: "Email does not exists"
   unconfirmed_email: "Your email is not confirmed. Please confirm your email first"
-  account_confirmed: "Your account has been confirmed."
+  confirmation_email_wrong: "We could not find a user with that email or that email has already been confirmed"
+  account_confirmed: "Your account has been confirmed"
   something_went_wrong: "Something went wrong"
   invalid_token: "Invalid Token"
   password_changed: "Password Changed Successfully"
   access_denied: 'Please log in first'
+  login_failed: 'Incorrect Username or Password'

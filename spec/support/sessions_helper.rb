@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SessionsHelper
   def login(user, remember_user: nil)
     post login_path, params: {
