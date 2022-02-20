@@ -8,6 +8,7 @@ module SignupPage
     element :password_input, "input[id='password']"
     element :password_confirmation_input, "input[id='password_confirmation']"
     element :sign_up_button, "button[type='submit']"
+    element :alert, "div[role='alert']"
 
     def sign_up(user)
       email_input.set user.email

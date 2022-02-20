@@ -43,4 +43,4 @@ en:
   invalid_token: "Invalid Token"
   password_changed: "Password Changed Successfully"
   access_denied: 'Please log in first'
-  login_failed: 'Incorrect Username or Password'
+  login_failed: 'Incorrect Email or Password'
