@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SignupPage
   class New < SitePrism::Page
     set_url '/sign_up'
@@ -13,6 +15,5 @@ module SignupPage
       password_confirmation_input.set user.password_confirmation
       sign_up_button.click
     end
-
   end
 end

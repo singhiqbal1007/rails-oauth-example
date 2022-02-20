@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 RSpec.describe 'ActiveSession', type: :request do
   include SessionsHelper
@@ -50,5 +52,4 @@ RSpec.describe 'ActiveSession', type: :request do
     expect(current_user).to be_nil
     expect(cookies[:remember_token]).to be_empty
   end
-
 end

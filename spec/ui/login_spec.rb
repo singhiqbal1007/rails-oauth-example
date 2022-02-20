@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Basic login', type: :feature, js: true do
   given!(:login_page) { SessionPage::New.new }
   given!(:account_page) { AccountPage::New.new }
 
-  given!(:incorrect_user) { build(:user, email: 'wrong@wrong.com', password: 'wrong' ) }
+  given!(:incorrect_user) { build(:user, email: 'wrong@wrong.com', password: 'wrong') }
   given!(:confirmed_user) { create(:user, :confirmed_now, :with_password_confirmation) }
   given!(:unconfirmed_user) { create(:user) }
 
@@ -27,5 +29,4 @@ feature 'Basic login', type: :feature, js: true do
     account_page.logout_from_everywhere.click
     expect(login_page).to have_email_input
   end
-
 end

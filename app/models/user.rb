@@ -1,10 +1,11 @@
-class User < ApplicationRecord
+# frozen_string_literal: true
 
+class User < ApplicationRecord
   # confirmation token is a signed_id, and is set to expire in 10 minutes.
   CONFIRMATION_TOKEN_EXPIRATION = 10.minutes
 
   # send mail from this address
-  MAILER_FROM_EMAIL = "no-reply@example.com"
+  MAILER_FROM_EMAIL = 'no-reply@example.com'
 
   # password reset token is a signed_id, and is set to expire in 10 minutes.
   PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes
@@ -26,8 +27,8 @@ class User < ApplicationRecord
 
   # ensure all emails are valid through a format validation.
   # URI::MailTo::EMAIL_REGEXP validate that the email address is properly formatted.
-  validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}, presence: true, uniqueness: true
-  validates :unconfirmed_email, format: {with: URI::MailTo::EMAIL_REGEXP, allow_blank: true}
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true
+  validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
 
   # This method is present by default in rails 7.1
   # This class method serves to find a user using the non-password attributes (such as email),
@@ -37,12 +38,13 @@ class User < ApplicationRecord
   # This prevents timing-based enumeration attacks,
   # wherein an attacker can determine if a password record exists even without knowing the password.
   def self.authenticate_by(attributes)
-    passwords, identifiers = attributes.to_h.partition do |name, value|
+    passwords, identifiers = attributes.to_h.partition do |name, _value|
       !has_attribute?(name) && has_attribute?("#{name}_digest")
     end.map(&:to_h)
 
-    raise ArgumentError, "One or more password arguments are required" if passwords.empty?
-    raise ArgumentError, "One or more finder arguments are required" if identifiers.empty?
+    raise ArgumentError, 'One or more password arguments are required' if passwords.empty?
+    raise ArgumentError, 'One or more finder arguments are required' if identifiers.empty?
+
     if (record = find_by(identifiers))
       record if passwords.count { |name, value| record.public_send(:"authenticate_#{name}", value) } == passwords.size
     else
@@ -54,10 +56,11 @@ class User < ApplicationRecord
   # The confirm! method will be called when a user confirms their email address.
   def confirm!
     if unconfirmed_or_reconfirming?
-      if unconfirmed_email.present?
-        return false unless update(email: unconfirmed_email, unconfirmed_email: nil)
-      end
+      return false if unconfirmed_email.present? && !update(email: unconfirmed_email, unconfirmed_email: nil)
+
+      # rubocop:disable Rails/SkipsModelValidations
       update_columns(confirmed_at: Time.current)
+      # rubocop:enable Rails/SkipsModelValidations
     else
       false
     end
@@ -72,11 +75,7 @@ class User < ApplicationRecord
   # This will send user email if email is confirmed
   # Therefore, this same method can be used to reset password.
   def confirmable_email
-    if unconfirmed_email.present?
-      unconfirmed_email
-    else
-      email
-    end
+    unconfirmed_email.presence || email
   end
 
   # signed token to generate confirmation
@@ -136,6 +135,7 @@ class User < ApplicationRecord
   # downcase unconfirmed email
   def downcase_unconfirmed_email
     return if unconfirmed_email.nil?
+
     self.unconfirmed_email = unconfirmed_email.downcase
   end
 end

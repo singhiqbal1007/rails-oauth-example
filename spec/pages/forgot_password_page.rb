@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ForgotPasswordPage
   class New < SitePrism::Page
     set_url '/passwords/new'
@@ -9,7 +11,6 @@ module ForgotPasswordPage
       email_input.set user.email
       submit_button.click
     end
-
   end
 
   class Edit < SitePrism::Page
@@ -24,6 +25,5 @@ module ForgotPasswordPage
       password_confirmation_input.set user.password_confirmation
       submit_button.click
     end
-
   end
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
-  before_action :redirect_if_authenticated, only: [:create, :new]
+  before_action :redirect_if_authenticated, only: %i[create new]
   before_action :authenticate_user!, only: [:destroy]
 
   # POST: create session i.e post request on login form
@@ -17,7 +19,7 @@ class SessionsController < ApplicationController
         # login the user
         active_session = login @user
         # save session in cookies if remember me is checked
-        remember(active_session) if params[:user][:remember_me] == "1"
+        remember(active_session) if params[:user][:remember_me] == '1'
         # redirect to the after_login_path
         redirect_to after_login_path
       end
@@ -36,6 +38,5 @@ class SessionsController < ApplicationController
   end
 
   # GET: login page
-  def new
-  end
+  def new; end
 end

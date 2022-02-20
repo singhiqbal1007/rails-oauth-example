@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 RSpec.describe 'ActiveSession', type: :request do
   include SessionsHelper
@@ -5,7 +7,6 @@ RSpec.describe 'ActiveSession', type: :request do
   let(:unconfirmed_user) { create(:user) }
   let(:confirmed_user) { create(:user, :confirmed_now, :with_password_confirmation) }
   let(:reconfirmed_user) { create(:user, :with_password_confirmation, :confirmed_week_ago, :with_uncomfirmed_email) }
-
 
   describe 'token not expired' do
     before(:each) do
@@ -49,10 +50,9 @@ RSpec.describe 'ActiveSession', type: :request do
   end
 
   describe 'token expired' do
-
     before(:each) do
       @confirmation_token = unconfirmed_user.generate_confirmation_token
-      stubbed_time = Time.now + 601.seconds
+      stubbed_time = 601.seconds.from_now
       allow(Time).to receive(:now).and_return(stubbed_time)
     end
 
@@ -63,7 +63,6 @@ RSpec.describe 'ActiveSession', type: :request do
 
       expect(response).to redirect_to(new_confirmation_path)
     end
-
   end
 
   it 'should redirect if confirmation link is incorrect' do
@@ -113,5 +112,4 @@ RSpec.describe 'ActiveSession', type: :request do
 
     expect(response).to redirect_to(account_path)
   end
-
 end

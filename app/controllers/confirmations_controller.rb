@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ConfirmationsController < ApplicationController
-  before_action :redirect_if_authenticated, only: [:create, :new]
+  before_action :redirect_if_authenticated, only: %i[create new]
 
   # create action will resend confirmation instructions to an unconfirmed user
   # if user is not present it will flash alert

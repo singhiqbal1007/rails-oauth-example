@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Basic Signup', type: :feature, js: true do
   given!(:login_page) { SessionPage::New.new }
   given!(:signup_page) { SignupPage::New.new }
   given!(:account_page) { AccountPage::New.new }
-
 
   given!(:new_confirmed_user) { build(:user, :with_password_confirmation) }
   given!(:new_unconfirmed_user) { build(:user, :with_password_confirmation) }
@@ -24,5 +25,4 @@ feature 'Basic Signup', type: :feature, js: true do
     login_page.log_in(new_unconfirmed_user)
     expect(login_page.alert).to have_text I18n.t('login_failed')
   end
-
 end

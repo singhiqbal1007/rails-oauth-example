@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ConfirmationPage
   class New < SitePrism::Page
     set_url '/confirmations/new'
@@ -10,6 +12,5 @@ module ConfirmationPage
       email_input.set user.email
       submit_button.click
     end
-
   end
 end

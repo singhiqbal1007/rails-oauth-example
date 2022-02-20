@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 RSpec.describe 'ActiveSession', type: :request do
   include SessionsHelper
@@ -12,10 +14,9 @@ RSpec.describe 'ActiveSession', type: :request do
   end
 
   describe 'token expired' do
-
     before(:each) do
       @password_reset_token = confirmed_user.generate_password_reset_token
-      stubbed_time = Time.now + 601.seconds
+      stubbed_time = 601.seconds.from_now
       allow(Time).to receive(:now).and_return(stubbed_time)
     end
 
@@ -26,7 +27,6 @@ RSpec.describe 'ActiveSession', type: :request do
       expect(flash[:alert]).not_to be_nil
     end
   end
-
 
   it 'should redirect from edit if password link is incorrect' do
     get edit_password_path('not_a_real_token')

@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe User, :type => :model do
+RSpec.describe User, type: :model do
   let(:user) { build(:user) }
   let(:confirmed_user) { build(:user, :confirmed_now, :with_password_confirmation) }
   let(:reconfirmed_user) { build(:user, :with_password_confirmation, :confirmed_week_ago, :with_uncomfirmed_email) }
 
   context 'validations' do
-
     it 'should be valid' do
       expect(user).to be_valid
     end
@@ -24,7 +25,7 @@ RSpec.describe User, :type => :model do
     end
 
     it 'email should be saved as lowercase' do
-      email = "UPPERCASE_EMAIL@UPPERCASE.COM"
+      email = 'UPPERCASE_EMAIL@UPPERCASE.COM'
       valid_user = create(:user, email: email)
       expect(valid_user.email).to eq(email.downcase)
     end
@@ -45,13 +46,13 @@ RSpec.describe User, :type => :model do
 
     it 'should respond to confirmed?' do
       expect(user.confirmed?).to be_falsey
-      user.confirmed_at = Time.now
+      user.confirmed_at = Time.zone.now
       expect(user.confirmed?).to be_truthy
     end
 
     it 'should respond to unconfirmed?' do
       expect(user.unconfirmed?).to be_truthy
-      user.confirmed_at = Time.now
+      user.confirmed_at = Time.zone.now
       expect(user.unconfirmed?).to be_falsey
     end
 
@@ -64,7 +65,7 @@ RSpec.describe User, :type => :model do
     it 'should respond to unconfirmed_or_reconfirming?' do
       expect(user.unconfirmed_or_reconfirming?).to be_truthy
       user.unconfirmed_email = 'random@email.com'
-      user.confirmed_at = Time.now
+      user.confirmed_at = Time.zone.now
       expect(user.unconfirmed_or_reconfirming?).to be_truthy
     end
 
@@ -95,13 +96,13 @@ RSpec.describe User, :type => :model do
       expect(confirmed_user.confirm!).to be_falsey
     end
 
-    context 'hi' do
+    context '.confirm!' do
       before do
         stubbed_time = Time.current
         allow(Time).to receive(:current).and_return(stubbed_time)
       end
 
-      it '.confirm! should update email if reconfirming' do
+      it 'should update email if reconfirming' do
         new_email = reconfirmed_user.unconfirmed_email
 
         reconfirmed_user.confirm!
@@ -110,16 +111,17 @@ RSpec.describe User, :type => :model do
         expect(reconfirmed_user.confirmed_at).to be_within(1.second).of Time.current
       end
 
-      it '.confirm! should set confirmed_at' do
+      it 'should set confirmed_at' do
         unconfirmed_user = create(:user, :with_password_confirmation)
         unconfirmed_user.confirm!
         expect(unconfirmed_user.confirmed_at).to be_within(1.second).of Time.current
       end
     end
 
-    it '.confirm! should not update email if already taken' do
-      confirmed_user = User.create!(email: "user1@example.com", password: "password", password_confirmation: "password")
-      reconfirmed_user = User.create!(email: "user2@example.com", password: "password", password_confirmation: "password", confirmed_at: 1.week.ago, unconfirmed_email: confirmed_user.email)
+    it 'should not update email if already taken' do
+      confirmed_user = User.create!(email: 'user1@example.com', password: 'password', password_confirmation: 'password')
+      reconfirmed_user = User.create!(email: 'user2@example.com', password: 'password',
+                                      password_confirmation: 'password', confirmed_at: 1.week.ago, unconfirmed_email: confirmed_user.email)
       expect(reconfirmed_user.confirm!).to be_falsey
     end
 
@@ -130,7 +132,7 @@ RSpec.describe User, :type => :model do
       expect(user.active_sessions.count).to eq(count + 1)
     end
 
-    it "should destroy associated active session when destryoed" do
+    it 'should destroy associated active session when destryoed' do
       user.save!
       user.active_sessions.create!
       user.destroy!

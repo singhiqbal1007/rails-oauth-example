@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 RSpec.describe 'Sessions', type: :request do
   include SessionsHelper
@@ -12,7 +14,6 @@ RSpec.describe 'Sessions', type: :request do
     end
 
     describe 'confirmed user login' do
-
       before do
         login confirmed_user
       end
@@ -65,6 +66,5 @@ RSpec.describe 'Sessions', type: :request do
       expect(current_user).to be_nil
       expect(response).to redirect_to(root_path)
     end
-
   end
 end

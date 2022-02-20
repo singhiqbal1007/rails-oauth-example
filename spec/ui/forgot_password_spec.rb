@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Forgot Password', type: :feature, js: true do
@@ -7,7 +9,7 @@ feature 'Forgot Password', type: :feature, js: true do
   given!(:forgot_password_edit_page) { ForgotPasswordPage::Edit.new }
   given!(:confirmation_page) { ConfirmationPage::New.new }
 
-  given!(:incorrect_user) { build(:user, email: 'wrong@wrong.com' ) }
+  given!(:incorrect_user) { build(:user, email: 'wrong@wrong.com') }
   given!(:confirmed_user) { create(:user, :confirmed_now, :with_password_confirmation) }
   given!(:unconfirmed_user) { create(:user) }
 

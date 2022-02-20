@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'passwords/new.html.erb', type: :view do
-
   context 'should show forgot password form' do
     before do
       render

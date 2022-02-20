@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:edit, :destroy, :update, :show]
-  before_action :redirect_if_authenticated, only: [:create, :new]
+  before_action :authenticate_user!, only: %i[edit destroy update show]
+  before_action :redirect_if_authenticated, only: %i[create new]
 
   # POST: sign up page
   def create
@@ -20,7 +22,7 @@ class UsersController < ApplicationController
   def destroy
     current_user.destroy
     reset_session
-    redirect_to root_path, notice: "Your account has been deleted."
+    redirect_to root_path, notice: 'Your account has been deleted.'
   end
 
   # GET: account page
@@ -43,13 +45,13 @@ class UsersController < ApplicationController
           @user.send_confirmation_email!
           redirect_to root_path, flash: { notice: I18n.t('check_your_email') }
         else
-          redirect_to root_path, notice: "Account updated."
+          redirect_to root_path, notice: 'Account updated.'
         end
       else
         render :edit, status: :unprocessable_entity
       end
     else
-      flash.now[:error] = "Incorrect password"
+      flash.now[:error] = 'Incorrect password'
       render :edit, status: :unprocessable_entity
     end
   end

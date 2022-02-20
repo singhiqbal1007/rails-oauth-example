@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 RSpec.describe 'Users', type: :request do
   include SessionsHelper
@@ -51,7 +53,6 @@ RSpec.describe 'Users', type: :request do
     expect(response).to redirect_to(login_path)
     expect(flash[:notice]).to be_nil
   end
-
 
   it 'should delete user' do
     login confirmed_user

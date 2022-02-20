@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SessionPage
   class New < SitePrism::Page
     set_url '/login'
