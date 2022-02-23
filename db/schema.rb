@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_171536) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "confirmed_at"
-    t.string "password_digest", null: false
+    t.string "password_digest"
     t.string "unconfirmed_email"
     t.boolean "oidc_user", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true

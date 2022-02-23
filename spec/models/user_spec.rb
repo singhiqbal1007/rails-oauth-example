@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   let(:user) { build(:user) }
+  let(:oidc_user) { build(:user, :oidc) }
   let(:confirmed_user) { build(:user, :confirmed_now, :with_password_confirmation) }
   let(:reconfirmed_user) { build(:user, :with_password_confirmation, :confirmed_week_ago, :with_uncomfirmed_email) }
 
@@ -39,9 +40,32 @@ RSpec.describe User, type: :model do
       end
     end
 
-    it 'cannot create user without password' do
-      user.password = nil
-      expect(user).not_to be_valid
+    context 'legacy user: ' do
+      it 'cannot create user without password' do
+        user.password = nil
+        expect(user).not_to be_valid
+      end
+
+      it 'cannot create user with password less than 3 char' do
+        user.password = '12'
+        expect(user).not_to be_valid
+      end
+    end
+
+    context 'oidc user: ' do
+      it 'should be valid' do
+        expect(oidc_user).to be_valid
+      end
+
+      it 'cannot create user without confirmed_at' do
+        oidc_user.confirmed_at = nil
+        expect(oidc_user).not_to be_valid
+      end
+
+      it 'can create without password' do
+        oidc_user.password = nil
+        expect(oidc_user).to be_valid
+      end
     end
 
     it 'should respond to confirmed?' do

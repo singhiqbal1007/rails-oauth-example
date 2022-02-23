@@ -20,5 +20,11 @@ FactoryBot.define do
     trait :with_uncomfirmed_email do
       unconfirmed_email { 'unconfirmed_email@example.com' }
     end
+
+    trait :oidc do
+      oidc_user { true }
+      confirmed_at { Time.current }
+      password { nil }
+    end
   end
 end

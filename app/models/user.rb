@@ -30,11 +30,12 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true
   validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
   validate do |record|
-    record.errors.add(:password, :blank) if record.public_send('password_digest').blank?
+    record.errors.add(:password, :blank) if !oidc_user && record.public_send('password_digest').blank?
   end
 
-  validates :password, length: { minimum: 3, maximum: 72 }
-  validates :password, confirmation: { allow_blank: true }
+  validates :password, length: { minimum: 3, maximum: 72 }, if: -> { oidc_user == false }
+  validates :password, confirmation: { allow_blank: true }, if: -> { oidc_user == false }
+  validates :confirmed_at, presence: true, allow_blank: false, if: -> { oidc_user == true }
 
   # This method is present by default in rails 7.1
   # This class method serves to find a user using the non-password attributes (such as email),
