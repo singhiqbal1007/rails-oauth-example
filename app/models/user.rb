@@ -16,7 +16,7 @@ class User < ApplicationRecord
   # This mechanism requires you to have a XXX_digest attribute.
   # Where XXX is the attribute name of your desired password.
   # This work with the password_digest column.
-  has_secure_password
+  has_secure_password(validations: false)
 
   # 1 user can have many active sessions
   has_many :active_sessions, dependent: :destroy
@@ -29,6 +29,12 @@ class User < ApplicationRecord
   # URI::MailTo::EMAIL_REGEXP validate that the email address is properly formatted.
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true
   validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
+  validate do |record|
+    record.errors.add(:password, :blank) if record.public_send('password_digest').blank?
+  end
+
+  validates :password, length: { minimum: 3, maximum: 72 }
+  validates :password, confirmation: { allow_blank: true }
 
   # This method is present by default in rails 7.1
   # This class method serves to find a user using the non-password attributes (such as email),

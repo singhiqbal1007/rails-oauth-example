@@ -8,9 +8,6 @@ Rails.application.routes.draw do
 
   get 'account', to: 'users#show'
 
-  get 'settings', to: 'users#edit'
-  put 'settings', to: 'users#update'
-
   delete 'account', to: 'users#destroy'
 
   # confirmations POST   /confirmations(.:format)  confirmations#create
