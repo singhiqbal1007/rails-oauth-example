@@ -7,6 +7,7 @@ RSpec.describe 'Sessions', type: :request do
   describe '/login' do
     let(:confirmed_user) { create(:user, :confirmed_now) }
     let(:unconfirmed_user) { create(:user) }
+    let(:oidc_user) { create(:user, :oidc) }
 
     it 'should get login if anonymous' do
       get login_path
@@ -57,6 +58,13 @@ RSpec.describe 'Sessions', type: :request do
       confirmed_user.password = 'wrong'
       login confirmed_user
       expect(flash[:alert]).to eq(I18n.t('login_failed'))
+      expect(current_user).to be_nil
+    end
+
+    it 'oidc user login via login form' do
+      # oidc_user.password = 'wrong'
+      login oidc_user
+      expect(flash[:alert]).to eq(I18n.t('login_via_google'))
       expect(current_user).to be_nil
     end
 

@@ -9,6 +9,7 @@ feature 'Basic login', type: :feature, js: true do
   given!(:incorrect_user) { build(:user, email: 'wrong@wrong.com', password: 'wrong') }
   given!(:confirmed_user) { create(:user, :confirmed_now, :with_password_confirmation) }
   given!(:unconfirmed_user) { create(:user) }
+  given!(:oidc_user) { create(:user, :oidc) }
 
   scenario 'Login incorrect user' do
     login_page.load
@@ -20,6 +21,13 @@ feature 'Basic login', type: :feature, js: true do
     login_page.load
     login_page.log_in(unconfirmed_user)
     expect(login_page.alert).to have_text I18n.t('login_failed')
+  end
+
+  scenario 'OIDC User login via login form' do
+    login_page.load
+    oidc_user.password = 'random'
+    login_page.log_in(oidc_user)
+    expect(login_page.alert).to have_text I18n.t('login_via_google')
   end
 
   scenario 'Login confirmed user' do

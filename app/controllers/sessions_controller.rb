@@ -11,7 +11,9 @@ class SessionsController < ApplicationController
     # if user exists
     if @user
       # if user email is not confirmed show alert
-      if @user.unconfirmed?
+      if @user.oidc_user?
+        redirect_to login_path, alert: I18n.t('login_via_google')
+      elsif @user.unconfirmed?
         redirect_to login_path, alert: I18n.t('login_failed')
       else
         # get user return to path from session

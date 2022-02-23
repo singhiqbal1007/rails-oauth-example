@@ -44,3 +44,4 @@ en:
   password_changed: "Password Changed Successfully"
   access_denied: 'Please log in first'
   login_failed: 'Incorrect Email or Password'
+  login_via_google: 'You signed up via Google. Please login via Google'

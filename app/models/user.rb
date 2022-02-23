@@ -53,7 +53,12 @@ class User < ApplicationRecord
     raise ArgumentError, 'One or more finder arguments are required' if identifiers.empty?
 
     if (record = find_by(identifiers))
-      record if passwords.count { |name, value| record.public_send(:"authenticate_#{name}", value) } == passwords.size
+      if record.legacy_user?
+        record if passwords.count { |name, value| record.public_send(:"authenticate_#{name}", value) } == passwords.size
+      else
+        new(passwords)
+        record
+      end
     else
       new(passwords)
       nil
@@ -122,6 +127,14 @@ class User < ApplicationRecord
   # opposite of confirm method
   def unconfirmed?
     !confirmed?
+  end
+
+  def oidc_user?
+    oidc_user == true
+  end
+
+  def legacy_user?
+    oidc_user == false
   end
 
   # We add @user.unconfirmed_or_reconfirming? to the conditional to ensure
