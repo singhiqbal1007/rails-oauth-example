@@ -1,0 +1,2 @@
+class OidcConfigs < ApplicationRecord
+end

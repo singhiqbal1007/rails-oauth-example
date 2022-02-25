@@ -29,6 +29,9 @@ gem 'less-rails', '~> 4.0.0'
 gem 'sprockets', '~> 3.0'
 gem 'therubyracer'
 
+# for oidc login
+gem 'openid_connect', '~> 1.3'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

@@ -10,6 +10,9 @@ Rails.application.routes.draw do
 
   delete 'account', to: 'users#destroy'
 
+  post 'oidc_login', to: 'sessions#oidc_login'
+  get 'oauth_callback' => 'sessions#oauth_callback', :as => :oauth_callback
+
   # confirmations POST   /confirmations(.:format)  confirmations#create
   # new_confirmation GET    /confirmations/new(.:format)  confirmations#new
   # edit_confirmation GET    /confirmations/:confirmation_token/edit(.:format)  confirmations#edit

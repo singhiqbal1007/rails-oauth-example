@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  include OidcLoginHelper
+  
   before_action :redirect_if_authenticated, only: %i[create new]
   before_action :authenticate_user!, only: [:destroy]
 
@@ -41,4 +43,19 @@ class SessionsController < ApplicationController
 
   # GET: login page
   def new; end
+
+
+  def oidc_login
+    client = GoogleOidc.new(root_url)
+    binding.pry
+    GoogleOidc.authorization_url(session)
+  end
+
+  def oauth_callback
+    authorization_code = params[:code]
+    client = GoogleOidc.client(root_url)
+
+
+
+  end
 end
