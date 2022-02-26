@@ -8,10 +8,10 @@ Rails.application.routes.draw do
 
   get 'account', to: 'users#show'
 
-  get 'settings', to: 'users#edit'
-  put 'settings', to: 'users#update'
-
   delete 'account', to: 'users#destroy'
+
+  post 'oidc_login', to: 'sessions#oidc_login'
+  get 'oauth_callback' => 'sessions#oauth_callback', :as => :oauth_callback
 
   # confirmations POST   /confirmations(.:format)  confirmations#create
   # new_confirmation GET    /confirmations/new(.:format)  confirmations#new

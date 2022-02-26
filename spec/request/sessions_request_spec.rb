@@ -7,6 +7,7 @@ RSpec.describe 'Sessions', type: :request do
   describe '/login' do
     let(:confirmed_user) { create(:user, :confirmed_now) }
     let(:unconfirmed_user) { create(:user) }
+    let(:oidc_user) { create(:user, :oidc) }
 
     it 'should get login if anonymous' do
       get login_path
@@ -48,14 +49,20 @@ RSpec.describe 'Sessions', type: :request do
 
     it 'should not login if unconfirmed"' do
       login unconfirmed_user
-      expect(flash[:alert]).to eq(I18n.t('login_failed'))
+      expect(flash[:alert]).to eq(I18n.t('unconfirmed_email'))
       expect(current_user).to be_nil
-      expect(response).to redirect_to(login_path)
+      expect(response).to redirect_to(new_confirmation_path)
     end
 
     it 'should handle invalid login' do
       confirmed_user.password = 'wrong'
       login confirmed_user
+      expect(flash[:alert]).to eq(I18n.t('login_failed'))
+      expect(current_user).to be_nil
+    end
+
+    it 'oidc user login via login form if password is nil' do
+      login oidc_user
       expect(flash[:alert]).to eq(I18n.t('login_failed'))
       expect(current_user).to be_nil
     end

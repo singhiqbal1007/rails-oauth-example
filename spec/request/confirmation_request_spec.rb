@@ -24,19 +24,6 @@ RSpec.describe 'ActiveSession', type: :request do
       expect(response).to redirect_to(root_path)
     end
 
-    it 'should reconfirm confirmed user' do
-      unconfirmed_email = reconfirmed_user.unconfirmed_email
-      confirmation_token = reconfirmed_user.generate_confirmation_token
-
-      get edit_confirmation_path(confirmation_token)
-
-      expect(reconfirmed_user.reload.confirmed?).to eq(true)
-      expect(reconfirmed_user.reload.confirmed_at).to be_within(1.second).of Time.current
-      expect(unconfirmed_email).to eq(reconfirmed_user.reload.email)
-      expect(reconfirmed_user.reload.unconfirmed_email).to be_nil
-      expect(response).to redirect_to(root_path)
-    end
-
     it 'should not update email address if already taken' do
       original_email = reconfirmed_user.email
       reconfirmed_user.update(unconfirmed_email: confirmed_user.email)
@@ -85,21 +72,6 @@ RSpec.describe 'ActiveSession', type: :request do
     login confirmed_user
     get edit_confirmation_path(confirmation_token)
     expect(response).to redirect_to(new_confirmation_path)
-  end
-
-  it 'should not prevent authenticated user confirming their unconfirmed_email' do
-    unconfirmed_email = reconfirmed_user.unconfirmed_email
-
-    login reconfirmed_user
-
-    confirmation_token = reconfirmed_user.generate_confirmation_token
-
-    get edit_confirmation_path(confirmation_token)
-
-    expect(reconfirmed_user.reload.confirmed?).to be_truthy
-    expect(unconfirmed_email).to eq(reconfirmed_user.reload.email)
-    expect(reconfirmed_user.reload.unconfirmed_email).to be_nil
-    expect(response).to redirect_to(root_path)
   end
 
   it 'should prevent authenticated user from submitting the confirmation form' do

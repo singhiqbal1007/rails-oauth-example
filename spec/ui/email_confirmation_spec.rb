@@ -36,7 +36,7 @@ feature 'Send Confirmation Link', type: :feature, js: true do
     login_page.email_link.click
 
     # logout
-    expect(account_page.heading).to have_text 'Current Logins'
+    expect(account_page.hi_user).to have_text "Hi #{unconfirmed_user.email}"
     account_page.logout_from_everywhere.click
     expect(login_page).to have_email_input
   end

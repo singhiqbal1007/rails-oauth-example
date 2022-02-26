@@ -4,7 +4,7 @@ module AccountPage
   class New < SitePrism::Page
     set_url '/account'
 
-    element :heading, '.mt-3'
+    element :hi_user, "h5[id='hi-user']"
     element :logout_from_everywhere, "input[value='Log out from everywhere']"
   end
 end
