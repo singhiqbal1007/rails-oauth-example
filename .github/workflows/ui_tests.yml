@@ -1,4 +1,4 @@
-name: Unit Tests
+name: UI Tests
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 jobs:
   build:
-    name: Unit Tests
+    name: UI Tests
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -27,12 +27,30 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7.4
+
       - name: Setup app dependencies
         run: |
           gem install bundler:2.2.32
           bundle install --jobs 4 --retry 3
           npm install
           npm install -g yarn
+
+      - name: Setup Chrome and Selenium
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+          echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+          apt-get update && \
+          apt-get install -y gnupg wget curl unzip --no-install-recommends && \
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+          echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
+          apt-get update -y && \
+          apt-get install -y google-chrome-stable && \
+          CHROMEVER=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*") && \
+          DRIVERVER=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROMEVER") && \
+          wget -q --continue -P /chromedriver "https://chromedriver.storage.googleapis.com/$DRIVERVER/chromedriver_linux64.zip" && \
+          unzip /chromedriver/chromedriver* -d /chromedriver
+          PATH=/chromedriver:$PATH
+
       - name: Setup database
         env:
           RAILS_ENV: test
@@ -46,7 +64,7 @@ jobs:
           bundle exec rails db:create
           bundle exec rails db:seed
 
-      - name: Run Model Specs
+      - name: Run UI Tests
         env:
           RAILS_ENV: test
           POSTGRES_HOST_AUTH_METHOD: trust
@@ -55,26 +73,4 @@ jobs:
           DB_PASSWORD: postgres
           DB_TEST_NAME: test_database
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-        run: bundle exec rake model_specs
-
-      - name: Run Request Specs
-        env:
-          RAILS_ENV: test
-          POSTGRES_HOST_AUTH_METHOD: trust
-          DB_HOST: localhost
-          DB_USER: postgres
-          DB_PASSWORD: postgres
-          DB_TEST_NAME: test_database
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-        run: bundle exec rake request_specs
-
-      - name: Run Views Specs
-        env:
-          RAILS_ENV: test
-          POSTGRES_HOST_AUTH_METHOD: trust
-          DB_HOST: localhost
-          DB_USER: postgres
-          DB_PASSWORD: postgres
-          DB_TEST_NAME: test_database
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-        run: bundle exec rake views_specs
+        run: bundle exec rake ui_specs
