@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
 
   # === OIDC LOGIN ===
   #### Step 1: https://openid.net/specs/openid-connect-basic-1_0.html#AuthenticationRequest
-  # Generate Authorization URL with scope=email, prompt=consent, redirect_uri=callback_url and response_type=code
+  # Generate Authorization URL with scope=openid email, prompt=consent, redirect_uri=callback_url and response_type=code
   #
   #### Step 2: https://openid.net/specs/openid-connect-basic-1_0.html#CodeRequest
   # Send the Authentication Request
@@ -57,7 +57,7 @@ class SessionsController < ApplicationController
   # User gets consent
   def oidc_login
     client = GoogleOidc.client(root_url)
-    session[:state] = SecureRandom.hex(16)
+    session[:state] = SecureRandom.hex(10)
 
     # generate the authorization_uri
     auth_uri = client.authorization_uri(

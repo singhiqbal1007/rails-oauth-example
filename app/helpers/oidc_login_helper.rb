@@ -3,6 +3,7 @@
 module OidcLoginHelper
   class GoogleOidc
     CONFIG_ENDPOINT = '.well-known/openid-configuration'
+    CONFIG_ISSUER = 'https://accounts.google.com'
 
     class << self
       def client(root_url)
@@ -13,13 +14,11 @@ module OidcLoginHelper
         retry_count = 3
         begin
           token = client.access_token!
-        rescue => e
-          retry_count = retry_count - 1
-          if retry_count < 0
-            return nil
-          else
-            retry
-          end
+        rescue StandardError
+          retry_count -= 1
+          return nil if retry_count.negative?
+
+          retry
         end
         token
       end
@@ -27,7 +26,7 @@ module OidcLoginHelper
       private
 
       def new_client(root_url)
-        config = new_config
+        config = new_config('google')
         OpenIDConnect::Client.new(
           identifier: ENV['GOOGLE_CLIENT_ID'],
           secret: ENV['GOOGLE_CLIENT_SECRET'],
@@ -38,11 +37,15 @@ module OidcLoginHelper
         )
       end
 
-      def new_config
+      def new_config(name)
         # get client configs from database
-        config = OidcConfigs.find_by(name: 'google')
-        if !config.nil? && !config.authorization_endpoint.nil? && config.updated_at > 1.day.ago
-        else
+        config = OidcConfigs.find_by(name: name)
+
+        if config.nil?
+          config = OidcConfigs.create(name: name, issuer: CONFIG_ISSUER)
+        end
+
+        if config.authorization_endpoint.nil? || config.updated_at < 1.day.ago
           # if database configs are older than 1 day then get it from google endpoint
           uri = URI.parse("#{config.issuer}/#{CONFIG_ENDPOINT}")
           http = Net::HTTP.new(uri.host, uri.port)

@@ -55,7 +55,7 @@ module Authentication
 
   # will be called before oauth callback
   def redirect_if_wrong_param
-    redirect_to root_url unless params[:code].present?
+    redirect_to root_url if params[:code].blank?
   end
 
   # save session in cookies if remember me is checked
