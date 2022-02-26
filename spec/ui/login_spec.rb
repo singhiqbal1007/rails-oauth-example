@@ -27,7 +27,7 @@ feature 'Basic login', type: :feature, js: true do
     login_page.load
     oidc_user.password = 'random'
     login_page.log_in(oidc_user)
-    expect(login_page.alert).to have_text I18n.t('login_via_google')
+    expect(login_page.alert).to have_text I18n.t('login_failed')
   end
 
   scenario 'Login confirmed user' do

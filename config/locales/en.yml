@@ -44,6 +44,5 @@ en:
   password_changed: "Password Changed Successfully"
   access_denied: 'Please log in first'
   login_failed: 'Incorrect Email or Password'
-  login_via_google: 'You signed up via Google. Please login via Google'
   oauth_login_failed: 'Account does not Exists. Please Signup from the Signup Page'
   oauth_login_error: 'Sorry, Something Bad Happened'

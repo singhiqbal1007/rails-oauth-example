@@ -22,7 +22,7 @@ FactoryBot.define do
     end
 
     trait :oidc do
-      oidc_user { true }
+      skip_password_validation { true }
       confirmed_at { Time.current }
       password { nil }
     end

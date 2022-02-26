@@ -61,10 +61,9 @@ RSpec.describe 'Sessions', type: :request do
       expect(current_user).to be_nil
     end
 
-    it 'oidc user login via login form' do
-      # oidc_user.password = 'wrong'
+    it 'oidc user login via login form if password is nil' do
       login oidc_user
-      expect(flash[:alert]).to eq(I18n.t('login_via_google'))
+      expect(flash[:alert]).to eq(I18n.t('login_failed'))
       expect(current_user).to be_nil
     end
 

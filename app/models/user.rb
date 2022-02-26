@@ -10,7 +10,7 @@ class User < ApplicationRecord
   # password reset token is a signed_id, and is set to expire in 10 minutes.
   PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes
 
-  attr_accessor :current_password
+  attr_accessor :skip_password_validation
 
   # Adds methods to set and authenticate against a BCrypt password.
   # This mechanism requires you to have a XXX_digest attribute.
@@ -29,13 +29,17 @@ class User < ApplicationRecord
   # URI::MailTo::EMAIL_REGEXP validate that the email address is properly formatted.
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true
   validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
+
   validate do |record|
-    record.errors.add(:password, :blank) if !oidc_user && record.public_send('password_digest').blank?
+    unless skip_password_validation
+      record.errors.add(:password, :blank) if record.public_send('password_digest').blank?
+    end
   end
 
-  validates :password, length: { minimum: 3, maximum: 72 }, if: -> { oidc_user == false }
-  validates :password, confirmation: { allow_blank: true }, if: -> { oidc_user == false }
-  validates :confirmed_at, presence: true, allow_blank: false, if: -> { oidc_user == true }
+  validates :password, length: { minimum: 3, maximum: 72 }, unless: :skip_password_validation
+  validates :confirmed_at, presence: true, allow_blank: false, if: :skip_password_validation
+  validates :password, confirmation: { allow_blank: true }
+
 
   # This method is present by default in rails 7.1
   # This class method serves to find a user using the non-password attributes (such as email),
@@ -52,13 +56,9 @@ class User < ApplicationRecord
     raise ArgumentError, 'One or more password arguments are required' if passwords.empty?
     raise ArgumentError, 'One or more finder arguments are required' if identifiers.empty?
 
-    if (record = find_by(identifiers))
-      if record.legacy_user?
-        record if passwords.count { |name, value| record.public_send(:"authenticate_#{name}", value) } == passwords.size
-      else
-        new(passwords)
-        record
-      end
+    record = find_by(identifiers)
+    if !record.nil? && !record.password_digest.nil?
+      record if passwords.count { |name, value| record.public_send(:"authenticate_#{name}", value) } == passwords.size
     else
       new(passwords)
       nil
@@ -127,14 +127,6 @@ class User < ApplicationRecord
   # opposite of confirm method
   def unconfirmed?
     !confirmed?
-  end
-
-  def oidc_user?
-    oidc_user == true
-  end
-
-  def legacy_user?
-    oidc_user == false
   end
 
   # We add @user.unconfirmed_or_reconfirming? to the conditional to ensure

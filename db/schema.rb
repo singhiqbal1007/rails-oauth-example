@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 2022_02_25_172734) do
     t.datetime "confirmed_at"
     t.string "password_digest"
     t.string "unconfirmed_email"
-    t.boolean "oidc_user", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
