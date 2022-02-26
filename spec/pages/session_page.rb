@@ -7,7 +7,7 @@ module SessionPage
     element :email_input, "input[id='email']"
     element :password_input, "input[id='password']"
     element :remember_me_checkbox, "input[id='user_remember_me']"
-    element :sign_in_button, "button[type='submit']"
+    element :sign_in_button, "button[id='sign-in']"
     element :alert, "div[role='alert']"
     element :email_link, "a[id='email_link']"
 

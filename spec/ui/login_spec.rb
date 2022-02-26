@@ -33,7 +33,7 @@ feature 'Basic login', type: :feature, js: true do
   scenario 'Login confirmed user' do
     login_page.load
     login_page.log_in(confirmed_user)
-    expect(account_page.heading).to have_text 'Current Logins'
+    expect(account_page.hi_user).to have_text "Hi #{confirmed_user.email}"
     account_page.logout_from_everywhere.click
     expect(login_page).to have_email_input
   end

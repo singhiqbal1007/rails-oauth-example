@@ -31,15 +31,14 @@ class User < ApplicationRecord
   validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
 
   validate do |record|
-    unless skip_password_validation
-      record.errors.add(:password, :blank) if record.public_send('password_digest').blank?
+    if !skip_password_validation && record.public_send('password_digest').blank?
+      record.errors.add(:password, :blank)
     end
   end
 
   validates :password, length: { minimum: 3, maximum: 72 }, unless: :skip_password_validation
   validates :confirmed_at, presence: true, allow_blank: false, if: :skip_password_validation
   validates :password, confirmation: { allow_blank: true }
-
 
   # This method is present by default in rails 7.1
   # This class method serves to find a user using the non-password attributes (such as email),

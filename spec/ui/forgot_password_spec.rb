@@ -28,15 +28,17 @@ feature 'Forgot Password', type: :feature, js: true do
 
     # click on reset password reset link
     login_page.email_link.click
+    sleep 5
 
     # set new password
     confirmed_user.password = 'new_password'
     confirmed_user.password_confirmation = 'new_password'
     forgot_password_edit_page.change_password(confirmed_user)
+    expect(login_page.alert).to have_text I18n.t('password_changed')
 
     # login with new password
     login_page.log_in(confirmed_user)
-    expect(account_page.heading).to have_text 'Current Logins'
+    expect(account_page.hi_user).to have_text "Hi #{confirmed_user.email}"
     account_page.logout_from_everywhere.click
     expect(login_page).to have_email_input
   end
@@ -58,7 +60,7 @@ feature 'Forgot Password', type: :feature, js: true do
     login_page.email_link.click
 
     # logout
-    expect(account_page.heading).to have_text 'Current Logins'
+    expect(account_page.hi_user).to have_text "Hi #{unconfirmed_user.email}"
     account_page.logout_from_everywhere.click
     expect(login_page).to have_email_input
   end

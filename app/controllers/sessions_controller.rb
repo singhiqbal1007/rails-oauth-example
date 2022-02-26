@@ -2,7 +2,7 @@
 
 class SessionsController < ApplicationController
   include OidcLoginHelper
-  
+
   before_action :redirect_if_authenticated, only: %i[create new]
   before_action :authenticate_user!, only: [:destroy]
 
@@ -42,7 +42,6 @@ class SessionsController < ApplicationController
   # GET: login page
   def new; end
 
-
   # === OIDC LOGIN ===
   #### Step 1: https://openid.net/specs/openid-connect-basic-1_0.html#AuthenticationRequest
   # Generate Authorization URL with scope=email, prompt=consent, redirect_uri=callback_url and response_type=code
@@ -61,14 +60,13 @@ class SessionsController < ApplicationController
 
     # generate the authorization_uri
     auth_uri = client.authorization_uri(
-      scope: [:openid, :email],
+      scope: %i[openid email],
       state: session[:state],
       prompt: 'consent',
       response_type: 'code'
     )
     redirect_to auth_uri
   end
-
 
   #### Step 5: https://openid.net/specs/openid-connect-basic-1_0.html#CodeResponse
   # Get the code provided the Authentication Server
@@ -103,12 +101,11 @@ class SessionsController < ApplicationController
           render :new, status: :unprocessable_entity
         end
       else
-        redirect_to root_url,  alert: I18n.t('oauth_login_error')
+        redirect_to root_url, alert: I18n.t('oauth_login_error')
       end
     else
       # redirect user to homepage in case of incorrect code
       redirect_to root_url
     end
-    
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateOidcConfigTable < ActiveRecord::Migration[6.1]
   def change
     create_table :oidc_configs do |t|

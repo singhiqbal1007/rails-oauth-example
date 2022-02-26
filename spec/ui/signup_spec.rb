@@ -43,7 +43,7 @@ feature 'Basic Signup', type: :feature, js: true do
     signup_page.load
     signup_page.sign_up(new_confirmed_user)
     login_page.email_link.click
-    expect(account_page.heading).to have_text 'Current Logins'
+    expect(account_page.hi_user).to have_text "Hi #{new_confirmed_user.email}"
     account_page.logout_from_everywhere.click
     expect(login_page).to have_email_input
   end

@@ -9,14 +9,10 @@ module OidcLoginHelper
         @client ||= new_client(root_url)
       end
 
-      def get_token
-
-      end
-
       private
 
       def new_client(root_url)
-        config = get_config
+        config = new_config
         OpenIDConnect::Client.new(
           identifier: ENV['GOOGLE_CLIENT_ID'],
           secret: ENV['GOOGLE_CLIENT_SECRET'],
@@ -27,11 +23,10 @@ module OidcLoginHelper
         )
       end
 
-      def get_config
+      def new_config
         # get client configs from database
         config = OidcConfigs.find_by(name: 'google')
         if !config.nil? && !config.authorization_endpoint.nil? && config.updated_at > 1.day.ago
-          config
         else
           # if database configs are older than 1 day then get it from google endpoint
           uri = URI.parse("#{config.issuer}/#{CONFIG_ENDPOINT}")
@@ -42,17 +37,16 @@ module OidcLoginHelper
           config.authorization_endpoint = hash['authorization_endpoint']
           config.token_endpoint = hash['token_endpoint']
           config.save!
-          config
         end
+        config
       end
 
-      def url_chomp(u)
-        uri = URI.parse(u.to_s)
+      def url_chomp(url)
+        uri = URI.parse(url.to_s)
         uri.path.squeeze!('/')
         uri.path.chomp!('/')
         uri.to_s
       end
     end
-
   end
 end

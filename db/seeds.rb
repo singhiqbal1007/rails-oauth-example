@@ -9,7 +9,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 Rails.logger.debug "\n== Creating user =="
 
-if OidcConfigs.count == 0
-  puts "Creating google oidc configs"
+if OidcConfigs.count.zero?
+  Rails.logger.debug 'Creating google oidc configs'
   OidcConfigs.create(name: 'google', issuer: 'https://accounts.google.com')
 end
