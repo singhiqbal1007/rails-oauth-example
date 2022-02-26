@@ -22,9 +22,11 @@
     <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
   </div>
 
+<% end %>
+
+<%= form_with url: oidc_login_path do |form| %>
   <button class="btn btn-lg btn-block btn-primary" type="submit">
     <i class="fab fa-google me-2"></i>
-    Sign up with google
+    Sign in with google
   </button>
-
 <% end %>

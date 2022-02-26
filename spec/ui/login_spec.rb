@@ -20,7 +20,7 @@ feature 'Basic login', type: :feature, js: true do
   scenario 'Login unconfirmed user' do
     login_page.load
     login_page.log_in(unconfirmed_user)
-    expect(login_page.alert).to have_text I18n.t('login_failed')
+    expect(login_page.alert).to have_text I18n.t('unconfirmed_email')
   end
 
   scenario 'OIDC User login via login form' do

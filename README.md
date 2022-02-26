@@ -45,6 +45,10 @@ Migrate Database:
 ```bash
 $ docker-compose -f docker-compose-prod.yml run web_prod rails db:migrate
 ```
+Seed Database:
+```bash
+$ docker-compose -f docker-compose-prod.yml run web_prod rails db:seed
+```
 
 
 ### Run

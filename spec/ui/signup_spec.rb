@@ -52,6 +52,6 @@ feature 'Basic Signup', type: :feature, js: true do
     signup_page.load
     signup_page.sign_up(new_unconfirmed_user)
     login_page.log_in(new_unconfirmed_user)
-    expect(login_page.alert).to have_text I18n.t('login_failed')
+    expect(login_page.alert).to have_text I18n.t('unconfirmed_email')
   end
 end

@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
     if @user
       # if user email is not confirmed show alert
       if @user.unconfirmed?
-        redirect_to login_path, alert: I18n.t('login_failed')
+        redirect_to new_confirmation_path, alert: I18n.t('unconfirmed_email')
       else
         # get user return to path from session
         after_login_path = session[:user_return_to] || account_path
@@ -91,15 +91,32 @@ class SessionsController < ApplicationController
     if token
       hash = JSON::JWT.decode(token.id_token, :skip_verification)
       email = hash['email']
+      user = nil
+      new_user = false
       if email.present?
         user = User.find_by(email: email)
-        if user
-          login user
-          redirect_to account_path
-        else
-          flash.now[:alert] = I18n.t('oauth_login_failed')
-          render :new, status: :unprocessable_entity
+
+        # if user is not present then create it
+        if user.nil?
+          user = User.create(email: email, confirmed_at: Time.current, skip_password_validation: true)
+          new_user = true
         end
+
+        # if user is unconfirmed then confirm it
+        if user.unconfirmed?
+          user.confirmed_at = Time.current
+          user.save(validate: false)
+        end
+
+        # login the user
+        login user
+
+        if new_user
+          redirect_to account_path, notice: I18n.t('account_created')
+        else
+          redirect_to account_path
+        end
+
       else
         redirect_to root_url, alert: I18n.t('oauth_login_error')
       end

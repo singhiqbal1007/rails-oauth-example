@@ -6,3 +6,4 @@ if [[ "${REMOVE_GEMFILE_LOCK}" == "true" ]]; then
 fi
 bundle install
 bundle exec rails db:migrate RAILS_ENV=development
+bundle exec rails db:seed RAILS_ENV=development

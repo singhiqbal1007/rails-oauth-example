@@ -49,9 +49,9 @@ RSpec.describe 'Sessions', type: :request do
 
     it 'should not login if unconfirmed"' do
       login unconfirmed_user
-      expect(flash[:alert]).to eq(I18n.t('login_failed'))
+      expect(flash[:alert]).to eq(I18n.t('unconfirmed_email'))
       expect(current_user).to be_nil
-      expect(response).to redirect_to(login_path)
+      expect(response).to redirect_to(new_confirmation_path)
     end
 
     it 'should handle invalid login' do
