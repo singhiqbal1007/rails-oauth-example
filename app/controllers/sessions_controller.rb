@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
 
   before_action :redirect_if_authenticated, only: %i[create new]
   before_action :authenticate_user!, only: [:destroy]
+  before_action :redirect_if_wrong_param, only: [:oauth_callback]
 
   # POST: create session i.e post request on login form
   def create
@@ -85,7 +86,7 @@ class SessionsController < ApplicationController
     client.authorization_code = params[:code]
 
     # request for token
-    token = client.access_token!
+    token = GoogleOidc.request_for_token(client)
 
     # if code is correct, token will be received
     if token
@@ -116,13 +117,11 @@ class SessionsController < ApplicationController
         else
           redirect_to account_path
         end
-
       else
-        redirect_to root_url, alert: I18n.t('oauth_login_error')
+        redirect_to root_path, alert: I18n.t('oauth_login_error')
       end
     else
-      # redirect user to homepage in case of incorrect code
-      redirect_to root_url
+      redirect_to root_path, alert: I18n.t('oauth_login_error')
     end
   end
 end

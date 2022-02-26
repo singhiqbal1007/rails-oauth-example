@@ -53,6 +53,11 @@ module Authentication
     redirect_to account_path if user_signed_in?
   end
 
+  # will be called before oauth callback
+  def redirect_if_wrong_param
+    redirect_to root_url unless params[:code].present?
+  end
+
   # save session in cookies if remember me is checked
   def remember(active_session)
     cookies.permanent.encrypted[:remember_token] = active_session.remember_token

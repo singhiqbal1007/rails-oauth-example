@@ -9,6 +9,21 @@ module OidcLoginHelper
         @client ||= new_client(root_url)
       end
 
+      def request_for_token(client)
+        retry_count = 3
+        begin
+          token = client.access_token!
+        rescue => e
+          retry_count = retry_count - 1
+          if retry_count < 0
+            return nil
+          else
+            retry
+          end
+        end
+        token
+      end
+
       private
 
       def new_client(root_url)
