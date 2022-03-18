@@ -25,9 +25,15 @@ spec:
             - name: DB_NAME
               value: rails_oauth_example_production
             - name: DB_PASSWORD
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: rails-oauth-example-secret
+                  key: postgres_password
             - name: DB_USER
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: rails-oauth-example-secret
+                  key: postgres_user
             - name: DB_PORT
               value: '5433'
           image: singhiqbal1007/rails-oauth-example:latest
@@ -45,9 +51,15 @@ spec:
           - name: DB_NAME
             value: rails_oauth_example_production
           - name: DB_PASSWORD
-            value: root
+            valueFrom:
+              secretKeyRef:
+                name: rails-oauth-example-secret
+                key: postgres_password
           - name: DB_USER
-            value: root
+            valueFrom:
+              secretKeyRef:
+                name: rails-oauth-example-secret
+                key: postgres_user
           - name: DB_PORT
             value: '5433'
         command: ['bash', '-c', 'bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails db:seed']

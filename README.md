@@ -50,21 +50,18 @@ Seed Database:
 $ docker-compose -f docker-compose-prod.yml run web_prod rails db:seed
 ```
 
-## Run production environment locally using kubernetes
-Run pods:
-```bash
-$ kctl apply -f kubernetes
-```
-
-Server is running in localhost:30050
-
-
 ### Run
 Start production server:
 ```
 $ docker-compose -f docker-compose-prod.yml up
 ```
 
+## Run production environment locally using kubernetes
+```bash
+$ kctl apply -f kubernetes
+```
+
+Server is running in `localhost:30050`
 
 # Deploy on heroku
 

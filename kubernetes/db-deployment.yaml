@@ -22,9 +22,15 @@ spec:
       containers:
         - env:
             - name: POSTGRES_PASSWORD
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: rails-oauth-example-secret
+                  key: postgres_password
             - name: POSTGRES_USER
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: rails-oauth-example-secret
+                  key: postgres_user
           image: postgres:14
           name: db
           ports:
