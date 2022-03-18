@@ -8,7 +8,7 @@ See demo at: [rails-oauth-example.herokuapp.com](https://rails-oauth-example.her
 * [dip](https://github.com/bibendi/dip)
 
 
-## Run development environment locally with docker
+## Run development environment locally using docker-compose
 ### Setup
 Build development images:
 ```bash
@@ -26,7 +26,7 @@ Start development server:
 $ dip rails s  
 ```
 
-## Run production environment locally with docker
+## Run production environment locally using docker-compose
 ### Setup
 Build production images:
 ```bash
@@ -49,6 +49,14 @@ Seed Database:
 ```bash
 $ docker-compose -f docker-compose-prod.yml run web_prod rails db:seed
 ```
+
+## Run production environment locally using kubernetes
+Run pods:
+```bash
+$ kctl apply -f kubernetes
+```
+
+Server is running in localhost:30050
 
 
 ### Run

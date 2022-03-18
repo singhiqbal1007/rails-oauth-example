@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.rails-oauth-example.service: web
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.rails-oauth-example.service: web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.rails-oauth-example.network/example-network: "true"
+        io.rails-oauth-example.service: web
+    spec:
+      containers:
+        - env:
+            - name: DB_HOST
+              value: db
+            - name: DB_NAME
+              value: rails_oauth_example_production
+            - name: DB_PASSWORD
+              value: root
+            - name: DB_USER
+              value: root
+            - name: DB_PORT
+              value: '5433'
+          image: singhiqbal1007/rails-oauth-example:latest
+          name: web
+          ports:
+            - containerPort: 3000
+          resources: {}
+      restartPolicy: Always
+      initContainers:
+      - name: migrations
+        image: singhiqbal1007/rails-oauth-example:latest
+        env:
+          - name: DB_HOST
+            value: db
+          - name: DB_NAME
+            value: rails_oauth_example_production
+          - name: DB_PASSWORD
+            value: root
+          - name: DB_USER
+            value: root
+          - name: DB_PORT
+            value: '5433'
+        command: ['bash', '-c', 'bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails db:seed']
+status: {}
