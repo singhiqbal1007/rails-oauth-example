@@ -1,6 +1,6 @@
 # Rails Oauth Example
 This is an example of rails OAUTH application running in docker and deployed on heroku. <br>
-See demo at: [rails-oauth-example.herokuapp.com](https://rails-oauth-example.herokuapp.com/)
+See demo at: [rails-oauth-example.onrender.com](https://rails-oauth-example.onrender.com/)
 
 # Run Locally
 ### prequisites
@@ -62,30 +62,3 @@ $ kctl apply -f kubernetes
 ```
 
 Server is running in `localhost:30050`
-
-# Deploy on heroku
-
-## Rails application
-
-Login to heroku
-```
-$ heroku login -i
-```
-Login to container registory
-```
-$ heroku container:login
-```
-Build and push the production docker image
-```
-$ heroku container:push web -a <HEROKU_APP_NAME>
-```
-Deploy the changes
-```
-$ heroku container:release web -a <HEROKU_APP_NAME>
-```
-
-## Manage Database
-### Migrate
-```
-$ heroku run rails db:migrate -a <HEROKU_APP_NAME>
-```
